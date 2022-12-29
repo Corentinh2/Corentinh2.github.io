@@ -1,0 +1,84 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 29 déc. 2022, 11:58:49
+    Author     : coren
+*/
+
+body,html {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+ul {
+  padding: 0;
+  width: 100%;
+}
+
+li {
+  display: inline;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  display: inline-block;
+  width: 19.5%;
+  margin-right: 0.625%;
+  text-align: center;
+  line-height: 3;
+  color: black;
+}
+
+li:last-child a {
+  margin-right: 0;
+}
+
+a:link, a:visited, a:focus {
+  background: yellow;
+}
+
+a:hover {
+  background: orange;
+}
+
+a:active {
+  background: red;
+  color: white;
+}
+
+#scroll_to_top {
+  position: fixed;
+  width: 150px;
+  height: 30px;
+  bottom: 20px;
+  right: -100px;
+}
+#scroll_to_top img {
+  width: 25px;
+}
+
+#ferrari_hypercar{
+    margin-left: 25px;
+    margin-right: 25px;
+    color: grey
+}
+
+.button_ferrari {
+        background-color: yellow;
+        border: none;
+        color: black;
+        padding: 15px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+      
+      hr{
+          color: white;
+      }     
