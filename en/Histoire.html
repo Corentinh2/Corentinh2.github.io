@@ -25,7 +25,9 @@
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
   <link rel="stylesheet" href="../assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="../assets/js/main.js" defer></script>
@@ -65,12 +67,19 @@
       <li><a href="Comprendre.html">Guide</a></li>
       <li class="has-mega">
         <button aria-expanded="false">More</button>
-        <div class="mega small">
+        <div class="mega small two">
+          <a href="Resultats.html"><span>Results</span></a>
           <a href="Histoire.html" aria-current="page"><span>History</span></a>
           <a href="Pilotes.html"><span>Drivers</span></a>
+          <a href="Venir.html"><span>Visit in 2027</span></a>
           <a href="Comparateur.html"><span>Compare</span></a>
+          <a href="Strategie.html"><span>Strategy</span></a>
           <a href="Quiz.html"><span>Quiz</span></a>
+          <a href="Jeu.html"><span>Pit stop game</span></a>
+          <a href="Lexique.html"><span>Glossary</span></a>
+          <a href="FondsEcran.html"><span>Wallpapers</span></a>
           <a href="Archives.html"><span>Archives</span></a>
+          <a href="Credits.html"><span>Photo credits</span></a>
         </div>
       </li>
       <li><a href="me_contacter.html">Contact</a></li>
@@ -94,23 +103,23 @@
       <div class="year-rail" aria-hidden="true"><span class="year-now">1923</span></div>
       <ol class="timeline">
         <li data-reveal="left" data-y="1923"><div class="tl-card"><span class="tl-year">1923</span><h3>The first race</h3><p>On 26 and 27 May, 33 cars start. André Lagache and René Léonard win in a Chenard & Walcker.</p></div></li>
-        <li data-reveal="right" data-y="1924"><div class="tl-card"><span class="tl-year">1924</span><h3>The "Bentley Boys"</h3><p>Bentley wins for the first time. Between 1924 and 1930 the British brand takes five wins thanks to its wealthy, daring drivers.</p></div></li>
+        <li data-reveal="right" data-y="1924"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-bentley.webp" alt="The &quot;Bentley Boys&quot;" loading="lazy"><span class="tl-year">1924</span><h3>The "Bentley Boys"</h3><p>Bentley wins for the first time. Between 1924 and 1930 the British brand takes five wins thanks to its wealthy, daring drivers.</p></div></li>
         <li data-reveal="left" data-y="1936"><div class="tl-card"><span class="tl-year">1936</span><h3>A year without a race</h3><p>Strikes in France prevent the event from being held. The race is also interrupted from 1940 to 1948 because of the war.</p></div></li>
-        <li data-reveal="right" data-y="1955"><div class="tl-card"><span class="tl-year">1955</span><h3>The worst tragedy</h3><p>A terrible accident kills more than 80 spectators. Circuit safety is then profoundly rethought.</p></div></li>
-        <li data-reveal="left" data-y="1966"><div class="tl-card"><span class="tl-year">1966</span><h3>Ford beats Ferrari</h3><p>After years of Ferrari dominance, Ford scores a 1-2-3 with the GT40. The rivalry even inspired a film.</p></div></li>
+        <li data-reveal="right" data-y="1955"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-jaguar.webp" alt="The worst tragedy" loading="lazy"><span class="tl-year">1955</span><h3>The worst tragedy</h3><p>A terrible accident kills more than 80 spectators. Circuit safety is then profoundly rethought.</p></div></li>
+        <li data-reveal="left" data-y="1966"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-ford.webp" alt="Ford beats Ferrari" loading="lazy"><span class="tl-year">1966</span><h3>Ford beats Ferrari</h3><p>After years of Ferrari dominance, Ford scores a 1-2-3 with the GT40. The rivalry even inspired a film.</p></div></li>
         <li data-reveal="right" data-y="1969"><div class="tl-card"><span class="tl-year">1969</span><h3>The end of the running start</h3><p>Jacky Ickx walks across the track in protest against the "Le Mans start" where drivers ran to their cars. He still wins! The running start is dropped the following year.</p></div></li>
-        <li data-reveal="left" data-y="1970"><div class="tl-card"><span class="tl-year">1970</span><h3>Porsche's first win</h3><p>The legendary 917 gives Porsche the first of its 19 wins, a record.</p></div></li>
-        <li data-reveal="right" data-y="1978"><div class="tl-card"><span class="tl-year">1978</span><h3>France wins with Alpine</h3><p>The Renault-Alpine A442B of Didier Pironi and Jean-Pierre Jaussaud wins.</p></div></li>
-        <li data-reveal="left" data-y="1991"><div class="tl-card"><span class="tl-year">1991</span><h3>Mazda's rotary engine</h3><p>The Mazda 787B becomes the first Japanese car, and the only rotary-engined one, to win at Le Mans. Its scream is still famous.</p></div></li>
+        <li data-reveal="left" data-y="1970"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-porsche917.webp" alt="Porsche's first win" loading="lazy"><span class="tl-year">1970</span><h3>Porsche's first win</h3><p>The legendary 917 gives Porsche the first of its 19 wins, a record.</p></div></li>
+        <li data-reveal="right" data-y="1978"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-alpine.webp" alt="France wins with Alpine" loading="lazy"><span class="tl-year">1978</span><h3>France wins with Alpine</h3><p>The Renault-Alpine A442B of Didier Pironi and Jean-Pierre Jaussaud wins.</p></div></li>
+        <li data-reveal="left" data-y="1991"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-mazda.webp" alt="Mazda's rotary engine" loading="lazy"><span class="tl-year">1991</span><h3>Mazda's rotary engine</h3><p>The Mazda 787B becomes the first Japanese car, and the only rotary-engined one, to win at Le Mans. Its scream is still famous.</p></div></li>
         <li data-reveal="right" data-y="1999"><div class="tl-card"><span class="tl-year">1999</span><h3>BMW wins</h3><p>The V12 LMR gives BMW its only overall win.</p></div></li>
         <li data-reveal="left" data-y="2006"><div class="tl-card"><span class="tl-year">2006</span><h3>First diesel win</h3><p>The Audi R10 TDI wins with a diesel engine. Audi takes 13 wins between 2000 and 2014; in 2012 the R18 e-tron quattro becomes the first hybrid winner.</p></div></li>
-        <li data-reveal="right" data-y="2009"><div class="tl-card"><span class="tl-year">2009</span><h3>Peugeot dethrones Audi</h3><p>The Peugeot 908 HDi FAP scores a 1-2 and gives the Lion its third win.</p></div></li>
-        <li data-reveal="left" data-y="2013"><div class="tl-card"><span class="tl-year">2013</span><h3>Tom Kristensen's record</h3><p>The Dane takes his 9th win, an all-time record. He is nicknamed "Mr Le Mans".</p></div></li>
+        <li data-reveal="right" data-y="2009"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-peugeot908.webp" alt="Peugeot dethrones Audi" loading="lazy"><span class="tl-year">2009</span><h3>Peugeot dethrones Audi</h3><p>The Peugeot 908 HDi FAP scores a 1-2 and gives the Lion its third win.</p></div></li>
+        <li data-reveal="left" data-y="2013"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-audi.webp" alt="Tom Kristensen's record" loading="lazy"><span class="tl-year">2013</span><h3>Tom Kristensen's record</h3><p>The Dane takes his 9th win, an all-time record. He is nicknamed "Mr Le Mans".</p></div></li>
         <li data-reveal="right" data-y="2016"><div class="tl-card"><span class="tl-year">2016</span><h3>Toyota's nightmare</h3><p>Leading minutes from the end, Toyota #5 breaks down on the final lap. Porsche wins.</p></div></li>
-        <li data-reveal="left" data-y="2018"><div class="tl-card"><span class="tl-year">2018</span><h3>Toyota finally wins</h3><p>With Fernando Alonso, Sébastien Buemi and Kazuki Nakajima, Toyota wins for the first time. Five wins follow up to 2022.</p></div></li>
+        <li data-reveal="left" data-y="2018"><div class="tl-card"><img class="tl-img" src="../assets/img/histo-toyota.webp" alt="Toyota finally wins" loading="lazy"><span class="tl-year">2018</span><h3>Toyota finally wins</h3><p>With Fernando Alonso, Sébastien Buemi and Kazuki Nakajima, Toyota wins for the first time. Five wins follow up to 2022.</p></div></li>
         <li data-reveal="right" data-y="2021"><div class="tl-card"><span class="tl-year">2021</span><h3>The Hypercar era begins</h3><p>The new Hypercar class replaces LMP1. Toyota wins with the GR010.</p></div></li>
-        <li data-reveal="left" data-y="2023"><div class="tl-card"><span class="tl-year">2023</span><h3>The centenary</h3><p>Ferrari returns and wins at its first attempt with the 499P, in front of more than 300,000 spectators.</p></div></li>
-        <li data-reveal="right" data-y="2026"><div class="tl-card"><span class="tl-year">2026</span><h3>Toyota's comeback</h3><p>After three Ferrari wins, the Toyota TR010 #7 wins ahead of the BMW #20.</p></div></li>
+        <li data-reveal="left" data-y="2023"><div class="tl-card"><img class="tl-img" src="../assets/img/ferrari-3.webp" alt="The centenary" loading="lazy"><span class="tl-year">2023</span><h3>The centenary</h3><p>Ferrari returns and wins at its first attempt with the 499P, in front of more than 300,000 spectators.</p></div></li>
+        <li data-reveal="right" data-y="2026"><div class="tl-card"><img class="tl-img" src="../assets/img/toyota-26-7.webp" alt="Toyota's comeback" loading="lazy"><span class="tl-year">2026</span><h3>Toyota's comeback</h3><p>After three Ferrari wins, the Toyota TR010 #7 wins ahead of the BMW #20.</p></div></li>
       </ol>
     </div>
   </section>
@@ -123,11 +132,11 @@
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">A fan site about the hypercars of the 24 Hours of Le Mans, from the centenary race to today.</p>
     </div>
     <div>
-      <h4>2026 grid</h4>
+      <h2 class="foot-title">2026 grid</h2>
       <ul><li><a href="Toyota.html">Toyota</a></li><li><a href="Ferrari.html">Ferrari</a></li><li><a href="BMW.html">BMW</a></li><li><a href="Cadillac.html">Cadillac</a></li><li><a href="Peugeot.html">Peugeot</a></li><li><a href="Alpine.html">Alpine</a></li><li><a href="AstonMartin.html">Aston Martin</a></li><li><a href="Genesis.html">Genesis</a></li></ul>
     </div>
     <div>
-      <h4>Explore</h4>
+      <h2 class="foot-title">Explore</h2>
       <ul>
         <li><a href="Circuit.html">Circuit</a></li>
         <li><a href="Comprendre.html">Guide</a></li>
@@ -135,11 +144,18 @@
         <li><a href="Pilotes.html">Drivers</a></li>
         <li><a href="Comparateur.html">Compare</a></li>
         <li><a href="Quiz.html">Quiz</a></li>
+        <li><a href="Resultats.html">Results</a></li>
+        <li><a href="Venir.html">Visit in 2027</a></li>
+        <li><a href="Jeu.html">Pit stop game</a></li>
+        <li><a href="Strategie.html">Strategy</a></li>
+        <li><a href="Lexique.html">Glossary</a></li>
+        <li><a href="FondsEcran.html">Wallpapers</a></li>
         <li><a href="Archives.html">Archives</a></li>
+        <li><a href="Credits.html">Photo credits</a></li>
       </ul>
     </div>
     <div>
-      <h4>Links</h4>
+      <h2 class="foot-title">Links</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">ACO (organiser)</a></li>

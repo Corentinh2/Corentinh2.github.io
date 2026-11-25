@@ -284,12 +284,13 @@ export default {
     eyebrow: "Le guide", h1: ["Comprendre", "la course"],
     lead: "Trois catégories sur la piste en même temps, des règles de pilotage strictes et des drapeaux à connaître : voici l'essentiel pour suivre les 24 Heures.",
     classesEyebrow: "Sur la piste", classesTitle: "Trois catégories, une seule course",
-    classesLead: "Toutes les voitures roulent ensemble, mais chaque catégorie a son propre classement. Les numéros de course ont une couleur différente selon la catégorie.",
+    classesLead: "Toutes les voitures roulent ensemble, mais chaque catégorie a son propre classement. Les numéros de course ont une couleur différente selon la catégorie : la plaque sur chaque carte en montre un exemple.",
     classes: [
       ["#ff2b3d", "Hypercar", "La catégorie reine", "Les prototypes des grands constructeurs, hybrides pour la plupart, autour de 680 ch. Ce sont eux qui jouent la victoire au classement général."],
       ["#3d8bff", "LMP2", "Les prototypes privés", "Un châssis Oreca et un moteur Gibson V8 identiques pour tous. Les équipes mélangent pilotes professionnels et amateurs."],
       ["#ff9f1a", "LMGT3", "Les voitures de série", "Des GT dérivées de modèles de route (Ferrari 296, Porsche 911, Corvette…). Depuis 2024, elles remplacent les GTE."],
     ],
+    plates: [["7", "Ex. : Toyota n°7"], ["28", "Ex. : IDEC Sport n°28"], ["33", "Ex. : Corvette n°33"]],
     lmhTitle: "LMH ou LMDh ?", lmhLead: "Deux règlements cohabitent en Hypercar. L'objectif : permettre à plus de constructeurs de venir, à un coût raisonnable.",
     lmhCols: ["", "LMH (Le Mans Hypercar)", "LMDh (Le Mans Daytona h)"],
     lmhRows: [

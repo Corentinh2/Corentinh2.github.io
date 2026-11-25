@@ -5,9 +5,14 @@ import { writeFileSync, mkdirSync, readFileSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
-import { teams, archivesExtra, board, SITE_URL, RACE_2027 } from "./data.mjs";
-import fr from "./i18n/fr.mjs";
-import en from "./i18n/en.mjs";
+import { teams, archivesExtra, board, SITE_URL, RACE_2027, GOATCOUNTER, historyImages, crewImages, driverImages, classImages, results } from "./data.mjs";
+import frBase from "./i18n/fr.mjs";
+import enBase from "./i18n/en.mjs";
+import frX from "./i18n/fr-extra.mjs";
+import enX from "./i18n/en-extra.mjs";
+const fr = { ...frBase, x: frX };
+const en = { ...enBase, x: enX };
+const credits = JSON.parse(readFileSync(new URL("./credits.json", import.meta.url), "utf8"));
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const written = [];
@@ -35,7 +40,8 @@ function ctx(T, file, opts = {}) {
   return { T, file, B, A, isEn };
 }
 
-function head(c, { title, desc, accent = "#ffd400", scripts = [] }) {
+const FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap";
+function head(c, { title, desc, accent = "#ffd400", scripts = [], hero = null }) {
   const { T, file, A, isEn } = c;
   const frURL = `${SITE_URL}/${file === "index.html" ? "" : file}`;
   const enURL = `${SITE_URL}/en/${file === "index.html" ? "" : file}`;
@@ -67,12 +73,15 @@ function head(c, { title, desc, accent = "#ffd400", scripts = [] }) {
   <link rel="manifest" href="${A}manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="${FONTS}" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="${FONTS}"></noscript>
+${hero ? `  <link rel="preload" as="image" href="${A}assets/img/${hero}.webp" fetchpriority="high">` : ""}
   <link rel="stylesheet" href="${A}assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="${A}assets/js/main.js" defer></script>
 ${scripts.map(s => `  <script src="${A}assets/js/${s}.js" defer></script>`).join("\n")}
 ${opts_jsonld(c)}
+${GOATCOUNTER ? `  <script data-goatcounter="https://${GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>` : ""}
 </head>
 <body style="--accent: ${accent};" data-sw="${A}sw.js">
 <a class="skip" href="#contenu">${T.ui.skip}</a>
@@ -85,7 +94,8 @@ function nav(c) {
   const { T, file, B, isEn } = c;
   const cur = f => (f === file ? ' aria-current="page"' : "");
   const links = teams.map(t => `          <a href="${B}${t.file}" style="--c: ${t.color}"${cur(t.file)}><i class="dot"></i><span>${t.name}<small>${T.teams[t.slug] && t.car}${t.archive ? " · " + T.ui.archive : !t.grid ? " · " + T.ui.absent26 : ""}</small></span></a>`).join("\n");
-  const more = [["Histoire.html", T.ui.history], ["Pilotes.html", T.ui.drivers], ["Comparateur.html", T.ui.compare], ["Quiz.html", T.ui.quiz], ["Archives.html", T.ui.archives]];
+  const X = T.x.nav;
+  const more = [["Resultats.html", X.results], ["Histoire.html", T.ui.history], ["Pilotes.html", T.ui.drivers], ["Venir.html", X.visit], ["Comparateur.html", T.ui.compare], ["Strategie.html", X.strategy], ["Quiz.html", T.ui.quiz], ["Jeu.html", X.game], ["Lexique.html", X.glossary], ["FondsEcran.html", X.wallpapers], ["Archives.html", T.ui.archives], ["Credits.html", X.credits]];
   const special = ["404.html", "offline.html"].includes(file);
   const otherHref = special ? "/en/" : isEn ? "../" + file : "en/" + file;
   return `
@@ -110,7 +120,7 @@ ${links}
       <li><a href="${B}Comprendre.html"${cur("Comprendre.html")}>${T.ui.understand}</a></li>
       <li class="has-mega">
         <button aria-expanded="false">${T.ui.more}</button>
-        <div class="mega small">
+        <div class="mega small two">
 ${more.map(([f, l]) => `          <a href="${B}${f}"${cur(f)}><span>${l}</span></a>`).join("\n")}
         </div>
       </li>
@@ -131,11 +141,11 @@ function footer(c) {
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">${T.footer.blurb}</p>
     </div>
     <div>
-      <h4>${T.footer.grid}</h4>
+      <h2 class="foot-title">${T.footer.grid}</h2>
       <ul>${list}</ul>
     </div>
     <div>
-      <h4>${T.footer.explore}</h4>
+      <h2 class="foot-title">${T.footer.explore}</h2>
       <ul>
         <li><a href="${B}Circuit.html">${T.ui.circuit}</a></li>
         <li><a href="${B}Comprendre.html">${T.ui.understand}</a></li>
@@ -143,11 +153,18 @@ function footer(c) {
         <li><a href="${B}Pilotes.html">${T.ui.drivers}</a></li>
         <li><a href="${B}Comparateur.html">${T.ui.compare}</a></li>
         <li><a href="${B}Quiz.html">${T.ui.quiz}</a></li>
+        <li><a href="${B}Resultats.html">${T.x.nav.results}</a></li>
+        <li><a href="${B}Venir.html">${T.x.nav.visit}</a></li>
+        <li><a href="${B}Jeu.html">${T.x.nav.game}</a></li>
+        <li><a href="${B}Strategie.html">${T.x.nav.strategy}</a></li>
+        <li><a href="${B}Lexique.html">${T.x.nav.glossary}</a></li>
+        <li><a href="${B}FondsEcran.html">${T.x.nav.wallpapers}</a></li>
         <li><a href="${B}Archives.html">${T.ui.archives}</a></li>
+        <li><a href="${B}Credits.html">${T.x.nav.credits}</a></li>
       </ul>
     </div>
     <div>
-      <h4>${T.footer.links}</h4>
+      <h2 class="foot-title">${T.footer.links}</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">${T.footer.organiser}</a></li>
@@ -225,7 +242,7 @@ function buildIndex(T) {
     { "@context": "https://schema.org", "@type": "WebSite", name: "Le Mans Hypercars", url: `${SITE_URL}/${c.isEn ? "en/" : ""}`, inLanguage: T.lang },
     { "@context": "https://schema.org", "@type": "SportsEvent", name: c.isEn ? "24 Hours of Le Mans 2027" : "24 Heures du Mans 2027", startDate: "2027-06-12", endDate: "2027-06-13", eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode", location: { "@type": "Place", name: "Circuit des 24 Heures du Mans", address: { "@type": "PostalAddress", addressLocality: "Le Mans", addressCountry: "FR" } }, organizer: { "@type": "Organization", name: "Automobile Club de l'Ouest", url: "https://www.lemans.org/" } },
   ])}</script>`;
-  write(`${c.isEn ? "en/" : ""}index.html`, `${head(c, { title: P.title, desc: P.desc })}
+  write(`${c.isEn ? "en/" : ""}index.html`, `${head(c, { title: P.title, desc: P.desc, hero: "toyota-3" })}
 ${nav(c)}
 
 <main id="contenu">
@@ -343,7 +360,7 @@ ${P.news.map(([i, h, p]) => `        <article><span class="ico">${i}</span><h3>$
         <h2>${P.exploreTitle}</h2>
       </div>
       <div class="explore" data-stagger>
-${P.explore.map(([f, i, h, p]) => `        <a href="${f}"><span class="ico">${i}</span><h3>${h}</h3><p>${p}</p><span class="go">→</span></a>`).join("\n")}
+${[...P.explore, ...T.x.explore].map(([f, i, h, p]) => `        <a href="${f}"><span class="ico">${i}</span><h3>${h}</h3><p>${p}</p><span class="go">→</span></a>`).join("\n")}
       </div>
     </div>
   </section>
@@ -399,7 +416,7 @@ ${t.gallery.map(g => `        <button aria-label="${T.ui.enlarge}"><img src="${c
     <div class="container"><div class="notice" data-reveal><span>📷</span><p style="margin: 0;">${T.ui.photosTodo(t.car)}</p></div></div>
   </section>`;
   const e = t.engine;
-  write(`${c.isEn ? "en/" : ""}${t.file}`, `${head(c, { title: `${t.name} ${t.car} — ${TT.full} | 24h Le Mans`, desc: `${t.name} ${t.car}: ${TT.lead}`, accent: t.color, scripts: ["engine"] })}
+  write(`${c.isEn ? "en/" : ""}${t.file}`, `${head(c, { title: `${t.name} ${t.car} — ${TT.full} | 24h Le Mans`, desc: `${t.name} ${t.car}: ${TT.lead}`, accent: t.color, scripts: ["engine"], hero: t.img })}
 ${nav(c)}
 
 <main id="contenu">
@@ -555,7 +572,7 @@ ${pageHero(c, P)}
     <div class="container">
       <div class="section-head" data-reveal><span class="eyebrow">${P.classesEyebrow}</span><h2>${P.classesTitle}</h2><p class="lead">${P.classesLead}</p></div>
       <div class="classes" data-stagger>
-${P.classes.map(([col, n, sub, p]) => `        <article style="--c: ${col}"><span class="class-num">${n === "Hypercar" ? "7" : n === "LMP2" ? "28" : "33"}</span><h3>${n}</h3><strong>${sub}</strong><p>${p}</p></article>`).join("\n")}
+${P.classes.map(([col, n, sub, p], i) => `        <article style="--c: ${col}"><div class="class-img"><img src="${c.A}assets/img/${classImages[i]}.webp" alt="${n}" loading="lazy"></div><figure class="plate"><span class="class-num">${P.plates[i][0]}</span><figcaption>${P.plates[i][1]}</figcaption></figure><h3>${n}</h3><strong>${sub}</strong><p>${p}</p></article>`).join("\n")}
       </div>
     </div>
   </section>
@@ -628,7 +645,7 @@ ${pageHero(c, P, { img: "centenaire", opacity: "opacity:.35" })}
     <div class="container">
       <div class="year-rail" aria-hidden="true"><span class="year-now">1923</span></div>
       <ol class="timeline">
-${P.events.map(([y, h, p], i) => `        <li data-reveal="${i % 2 ? "right" : "left"}" data-y="${y}"><div class="tl-card"><span class="tl-year">${y}</span><h3>${h}</h3><p>${p}</p></div></li>`).join("\n")}
+${P.events.map(([y, h, p], i) => `        <li data-reveal="${i % 2 ? "right" : "left"}" data-y="${y}"><div class="tl-card">${historyImages[y] ? `<img class="tl-img" src="${c.A}assets/img/${historyImages[y]}.webp" alt="${esc(h)}" loading="lazy">` : ""}<span class="tl-year">${y}</span><h3>${h}</h3><p>${p}</p></div></li>`).join("\n")}
       </ol>
     </div>
   </section>
@@ -654,8 +671,9 @@ ${pageHero(c, P)}
       <div class="section-head" data-reveal><span class="eyebrow">2023 → 2026</span><h2>${P.crewsTitle}</h2></div>
 ${P.crews.map(cr => `      <div class="crew" style="--c: ${cr.c}" data-reveal>
         <div class="crew-head"><span class="crew-year">${cr.y}</span><span class="crew-car">${cr.car}</span></div>
+        ${crewImages[cr.y] ? `<div class="crew-photo"><img src="${c.A}assets/img/${crewImages[cr.y]}.webp" alt="${esc(cr.car)}" loading="lazy"></div>` : ""}
         <div class="drivers" data-stagger>
-${cr.drivers.map(([n, f, p]) => `          <article class="driver"><div class="avatar"><span>${initials(n)}</span><i class="cc">${cc(f)}</i></div><h3>${n}</h3><p>${p}</p></article>`).join("\n")}
+${cr.drivers.map(([n, f, p]) => `          <article class="driver"><div class="avatar">${driverImages[n] ? `<img src="${c.A}assets/img/${driverImages[n]}.webp" alt="${n}" loading="lazy">` : `<span>${initials(n)}</span>`}<i class="cc">${cc(f)}</i></div><h3>${n}</h3><p>${p}</p></article>`).join("\n")}
         </div>
       </div>`).join("\n")}
     </div>
@@ -758,7 +776,7 @@ ${pageHero(c, P, { img: "glickenhaus-3", opacity: "filter: grayscale(1); opacity
       <div class="teams" data-stagger>
         ${otherTeams.map(t => teamCard(c, t)).join("\n        ")}
 ${archivesExtra.map(a => `        <div class="team-card" style="--c: ${a.color}">
-          <div class="media"><span class="badge dark">2024</span><div class="silhouette"></div></div>
+          <div class="media"><span class="badge dark">2024</span>${a.img ? `<img src="${c.A}assets/img/${a.img}.webp" alt="${a.name} ${a.car}" loading="lazy">` : `<div class="silhouette"></div>`}</div>
           <div class="body"><h3>${a.name}</h3><span class="car">${a.car}</span><p class="muted" style="margin: 10px 0 0; font-size: .92rem;">${T.archivesExtra[a.key]}</p></div>
         </div>`).join("\n")}
       </div>
@@ -813,9 +831,269 @@ ${footer(c)}`);
 }
 
 /* ============================================================
+   Pages ajoutées (résultats, venir, lexique, jeu, stratégie,
+   fonds d'écran, crédits)
+   ============================================================ */
+const out = (c, f) => `${c.isEn ? "en/" : ""}${f}`;
+const num = (c, s) => (c.isEn ? s.replace(/n°/g, "#") : s);
+
+function buildResults(T) {
+  const c = ctx(T, "Resultats.html");
+  const P = T.x.results;
+  const years = Object.keys(results).sort((a, b) => b - a);
+  write(out(c, "Resultats.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["tools"] })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P, { img: "ferrari-25-win", opacity: "opacity:.45" })}
+
+  <section style="padding-top: 20px;">
+    <div class="container">
+      <div class="tabs" role="tablist" data-reveal>
+${years.map((y, i) => `        <button role="tab" aria-selected="${i === 0}" aria-controls="res-${y}" id="tab-${y}">${y}</button>`).join("\n")}
+      </div>
+${years.map((y, i) => {
+    const R = results[y];
+    const pod = R.overall.slice(0, 3);
+    const order = [1, 0, 2];
+    return `      <div class="tab-panel" role="tabpanel" id="res-${y}" aria-labelledby="tab-${y}"${i ? " hidden" : ""}>
+        <h2 class="panel-title">${P.overall} ${y}</h2>
+        <div class="podium">
+${order.map(k => `          <div class="step s${k + 1}" style="--c: ${pod[k][1]}"><div class="who"><b>${pod[k][0]}</b><span>${num(c, pod[k][2])}</span>${pod[k][3] ? `<small>${pod[k][3]}</small>` : ""}</div><div class="block"><span>${k + 1}</span></div></div>`).join("\n")}
+        </div>
+        ${R.overall.length > 3 ? `<ol class="rest" start="4">${R.overall.slice(3).map(r => `<li style="--c: ${r[1]}"><b>${P.place[R.overall.indexOf(r)]}</b> ${r[0]} · ${num(c, r[2])}${r[3] ? ` <small>(${r[3]})</small>` : ""}</li>`).join("")}</ol>` : ""}
+        <h3 class="panel-sub">${P.classWinners}</h3>
+        <div class="class-winners">
+${R.classes.map(([cl, col, team, car]) => `          <article style="--c: ${col}"><span class="cl">${cl}</span><b>${team}</b><span>${num(c, car)}</span></article>`).join("\n")}
+        </div>
+        <p class="notice" style="margin-top: 24px;"><span>ℹ️</span> ${P.notes[y]}</p>
+      </div>`;
+  }).join("\n")}
+    </div>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+function buildVisit(T) {
+  const c = ctx(T, "Venir.html");
+  const P = T.x.visit;
+  write(out(c, "Venir.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["tools"] })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P, { img: "lemans-above", opacity: "opacity:.55" })}
+
+  <section style="padding-top: 30px;">
+    <div class="container">
+      <div class="section-head" data-reveal><span class="eyebrow">📅</span><h2>${P.weekTitle}</h2><p class="lead">${P.weekNote}</p></div>
+      <ol class="week" data-stagger>
+${P.week.map(([d, h, p], i) => `        <li${i === 5 ? ' class="race"' : ""}><span class="d">${d}</span><h3>${h}</h3><p>${p}</p></li>`).join("\n")}
+      </ol>
+      <div class="btn-row"><a class="btn" href="https://www.24h-lemans.com/" target="_blank" rel="noopener">${P.official} <span class="arrow">↗</span></a></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container split">
+      <div data-reveal="left">
+        <span class="eyebrow">✅</span><h2>${P.tipsTitle}</h2><p class="lead" style="margin-top: 14px;">${P.tipsLead}</p>
+        <div class="check-progress"><i></i></div>
+        <button class="btn ghost check-reset" style="margin-top: 20px;">${P.reset}</button>
+      </div>
+      <ul class="checklist" data-reveal="right">
+${P.tips.map((t, i) => `        <li><label><input type="checkbox" data-check="tip${i}"><span class="box"></span><span>${t}</span></label></li>`).join("\n")}
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head" data-reveal><span class="eyebrow">ℹ️</span><h2>${P.practicalTitle}</h2></div>
+      <div class="news four" data-stagger>
+${P.practical.map(([i, h, p]) => `        <article><span class="ico">${i}</span><h3>${h}</h3><p>${p}</p></article>`).join("\n")}
+      </div>
+    </div>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+function buildGlossary(T) {
+  const c = ctx(T, "Lexique.html");
+  const P = T.x.glossary;
+  const terms = [...P.terms].sort((a, b) => a[0].localeCompare(b[0], T.lang));
+  const letters = [...new Set(terms.map(t => t[0][0].toUpperCase()))];
+  write(out(c, "Lexique.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["tools"] })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P)}
+
+  <section style="padding-top: 20px;">
+    <div class="container glossary">
+      <div class="gl-tools" data-reveal>
+        <input type="search" class="gl-search" placeholder="${P.search}" aria-label="${P.search}">
+        <nav class="gl-letters" aria-label="A-Z">${letters.map(l => `<a href="#l-${l}">${l}</a>`).join("")}</nav>
+      </div>
+      <dl class="gl-list">
+${terms.map((t, i) => {
+    const l = t[0][0].toUpperCase();
+    const first = i === 0 || terms[i - 1][0][0].toUpperCase() !== l;
+    return `${first ? `        <div class="gl-letter" id="l-${l}">${l}</div>\n` : ""}        <div class="gl-item" data-reveal><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`;
+  }).join("\n")}
+      </dl>
+      <p class="gl-none muted" hidden>${P.none}</p>
+    </div>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+function buildGame(T) {
+  const c = ctx(T, "Jeu.html");
+  const P = T.x.game;
+  write(out(c, "Jeu.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["game"] })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P)}
+
+  <section style="padding-top: 20px;">
+    <div class="container">
+      <div class="game" data-reveal="zoom">
+        <div class="game-hud"><div><small>${P.time}</small><b class="g-time">0.00 s</b></div><div><small>${P.penalty}</small><b class="g-pen">0 s</b></div><div><small>${P.best}</small><b class="g-best">—</b></div></div>
+        <div class="pitlane" aria-live="polite">
+          <div class="box-zone"></div>
+          <div class="g-car" style="--c: var(--accent)">
+            <svg viewBox="0 0 120 240" aria-hidden="true">
+              <rect x="22" y="10" width="76" height="220" rx="30" class="body"/>
+              <rect x="40" y="80" width="40" height="60" rx="14" class="cockpit"/>
+              <rect x="14" y="196" width="92" height="16" rx="4" class="wing"/>
+              <rect x="0" y="36" width="20" height="40" rx="5" class="wheel" data-w="0"/>
+              <rect x="100" y="36" width="20" height="40" rx="5" class="wheel" data-w="1"/>
+              <rect x="0" y="160" width="20" height="40" rx="5" class="wheel" data-w="2"/>
+              <rect x="100" y="160" width="20" height="40" rx="5" class="wheel" data-w="3"/>
+            </svg>
+          </div>
+          <div class="lights" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p class="g-msg"></p>
+        </div>
+        <div class="fuel" hidden><div class="fuel-bar"><span class="fuel-ok"></span><i></i></div><button class="btn fuel-btn">⛽ ${P.hold}</button></div>
+        <div class="game-start">
+          <ol class="game-steps">${P.steps.map(([h, p]) => `<li><b>${h}</b><span>${p}</span></li>`).join("")}</ol>
+          <button class="btn g-go">${P.start} <span class="arrow">→</span></button>
+        </div>
+        <div class="game-end" hidden><strong class="g-final"></strong><p class="g-verdict lead"></p><button class="btn g-again">${P.again} ↺</button></div>
+      </div>
+    </div>
+    <script type="application/json" id="game-data">${json(P)}</script>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+function buildStrategy(T) {
+  const c = ctx(T, "Strategie.html");
+  const P = T.x.strategy;
+  const ctl = (id, label, min, max, val, step = 1) => `<label class="range"><span>${label} <b data-out="${id}">${val}</b></span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+  write(out(c, "Strategie.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["strategy"] })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P)}
+
+  <section style="padding-top: 20px;">
+    <div class="container strat" data-hours="${P.hours}">
+      <div class="strat-controls" data-reveal="left">
+        ${ctl("stint", P.controls.stint, 8, 16, 13)}
+        <p class="strat-warn" hidden>⚠️ ${P.warning}</p>
+        ${ctl("tyres", P.controls.tyres, 1, 4, 2)}
+        ${ctl("driver", P.controls.driver, 1, 4, 2)}
+        ${ctl("sc", P.controls.sc, 0, 10, 4)}
+        ${ctl("pace", P.controls.pace, 205, 220, 210)}
+      </div>
+      <div data-reveal="right">
+        <div class="stats strat-out">
+          <div class="stat"><strong data-o="laps">0</strong><span>${P.out.laps}</span></div>
+          <div class="stat"><strong data-o="stops">0</strong><span>${P.out.stops}</span></div>
+          <div class="stat"><strong data-o="pit">0</strong><span>${P.out.pit}</span></div>
+          <div class="stat"><strong data-o="dist">0</strong><span>${P.out.distance}</span></div>
+        </div>
+        <div class="strat-chart"><svg viewBox="0 0 600 220" preserveAspectRatio="none" aria-label="${esc(P.chart)}"><path class="area"/><path class="line"/></svg><div class="axis"><span>0 ${P.hours}</span><span>6 ${P.hours}</span><span>12 ${P.hours}</span><span>18 ${P.hours}</span><span>24 ${P.hours}</span></div></div>
+        <p class="muted" style="font-size: .85rem;">${P.chart}. ${P.out.avg} : <b data-o="avg">—</b></p>
+        <p class="muted" style="font-size: .8rem;">${P.model}</p>
+      </div>
+    </div>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+function buildWallpapers(T) {
+  const c = ctx(T, "FondsEcran.html");
+  const P = T.x.wallpapers;
+  const data = teams.map(t => ({ slug: t.slug, name: t.name, car: t.car, color: t.color, number: t.number }));
+  write(out(c, "FondsEcran.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["wallpaper"] })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P)}
+
+  <section style="padding-top: 20px;">
+    <div class="container wp">
+      <div class="wp-controls" data-reveal="left">
+        <label>${P.team}<select class="wp-team">${teams.map(t => `<option value="${t.slug}">${t.name} ${t.car}</option>`).join("")}</select></label>
+        <fieldset><legend>${P.format}</legend>
+          <label class="pill"><input type="radio" name="fmt" value="desktop" checked><span>${P.desktop}</span></label>
+          <label class="pill"><input type="radio" name="fmt" value="phone"><span>${P.phone}</span></label>
+        </fieldset>
+        <fieldset><legend>${P.style}</legend>
+          ${P.styles.map((s, i) => `<label class="pill"><input type="radio" name="style" value="${i}"${i ? "" : " checked"}><span>${s}</span></label>`).join("")}
+        </fieldset>
+        <a class="btn wp-dl" download="le-mans.png" href="#">⬇ ${P.download}</a>
+      </div>
+      <div class="wp-preview" data-reveal="right"><canvas width="1920" height="1080"></canvas></div>
+    </div>
+    <script type="application/json" id="wp-data">${json(data)}</script>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+function buildCredits(T) {
+  const c = ctx(T, "Credits.html");
+  const P = T.x.credits;
+  write(out(c, "Credits.html"), `${head(c, { title: P.title, desc: P.desc })}
+${nav(c)}
+
+<main id="contenu">
+${pageHero(c, P)}
+
+  <section style="padding-top: 20px;">
+    <div class="container">
+      <div class="credits" data-stagger>
+${Object.entries(credits).map(([file, k]) => `        <article><img src="${c.A}assets/img/${file}.webp" alt="" loading="lazy"><div><b>${esc(k.title.replace(/\.(jpe?g|png)$/i, ""))}</b><span>${P.author} : ${esc(k.artist)}</span><span>${P.license} : ${k.licenseUrl ? `<a href="${k.licenseUrl}" target="_blank" rel="noopener license">${k.license}</a>` : k.license}</span><a href="${k.source}" target="_blank" rel="noopener">${P.source} ↗</a></div></article>`).join("\n")}
+      </div>
+      <p class="muted" style="margin-top: 24px;">${P.changes}</p>
+      <div class="notice" style="margin-top: 24px;"><span>📷</span><p style="margin: 0;"><b>${P.original}.</b> ${P.originalText}</p></div>
+    </div>
+  </section>
+</main>
+${footer(c)}`);
+}
+
+/* ============================================================
    Génération
    ============================================================ */
 for (const T of [fr, en]) {
+  buildResults(T);
+  buildVisit(T);
+  buildGlossary(T);
+  buildGame(T);
+  buildStrategy(T);
+  buildWallpapers(T);
+  buildCredits(T);
   buildIndex(T);
   teams.forEach((t, i) => buildTeam(T, t, i));
   buildCircuit(T);

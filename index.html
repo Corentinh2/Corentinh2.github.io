@@ -25,12 +25,15 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="preload" as="image" href="assets/img/toyota-3.webp" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="assets/js/main.js" defer></script>
 
   <script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebSite","name":"Le Mans Hypercars","url":"https://corentinh2.github.io/","inLanguage":"fr"},{"@context":"https://schema.org","@type":"SportsEvent","name":"24 Heures du Mans 2027","startDate":"2027-06-12","endDate":"2027-06-13","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Circuit des 24 Heures du Mans","address":{"@type":"PostalAddress","addressLocality":"Le Mans","addressCountry":"FR"}},"organizer":{"@type":"Organization","name":"Automobile Club de l'Ouest","url":"https://www.lemans.org/"}}]</script>
+
 </head>
 <body style="--accent: #ffd400;" data-sw="sw.js">
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -66,12 +69,19 @@
       <li><a href="Comprendre.html">Comprendre</a></li>
       <li class="has-mega">
         <button aria-expanded="false">Plus</button>
-        <div class="mega small">
+        <div class="mega small two">
+          <a href="Resultats.html"><span>Résultats</span></a>
           <a href="Histoire.html"><span>Histoire</span></a>
           <a href="Pilotes.html"><span>Pilotes</span></a>
+          <a href="Venir.html"><span>Venir en 2027</span></a>
           <a href="Comparateur.html"><span>Comparateur</span></a>
+          <a href="Strategie.html"><span>Stratégie</span></a>
           <a href="Quiz.html"><span>Quiz</span></a>
+          <a href="Jeu.html"><span>Jeu des stands</span></a>
+          <a href="Lexique.html"><span>Lexique</span></a>
+          <a href="FondsEcran.html"><span>Fonds d'écran</span></a>
           <a href="Archives.html"><span>Archives</span></a>
+          <a href="Credits.html"><span>Crédits photos</span></a>
         </div>
       </li>
       <li><a href="me_contacter.html">Contact</a></li>
@@ -206,7 +216,7 @@
         <a class="team-card" href="Toyota.html" style="--c: #ff2b3d">
           <div class="media" style="view-transition-name: car-toyota">
             <span class="badge">Vainqueur 2026</span>
-            <img src="assets/img/toyota-1.webp" alt="Toyota TR010 Hybrid" loading="lazy">
+            <img src="assets/img/toyota-26-7.webp" alt="Toyota TR010 Hybrid" loading="lazy">
           </div>
           <div class="body">
             <h3>Toyota</h3>
@@ -217,7 +227,7 @@
         <a class="team-card" href="Ferrari.html" style="--c: #ff3b1f">
           <div class="media" style="view-transition-name: car-ferrari">
             <span class="badge">3 victoires</span>
-            <img src="assets/img/ferrari-3.webp" alt="Ferrari 499P" loading="lazy">
+            <img src="assets/img/ferrari-26-51.webp" alt="Ferrari 499P" loading="lazy">
           </div>
           <div class="body">
             <h3>Ferrari</h3>
@@ -228,7 +238,7 @@
         <a class="team-card" href="BMW.html" style="--c: #3d8bff">
           <div class="media" style="view-transition-name: car-bmw">
             <span class="badge">2e en 2026</span>
-            <div class="silhouette"><span class="ph">Photo à venir</span></div>
+            <img src="assets/img/bmw-26-20.webp" alt="BMW M Hybrid V8" loading="lazy">
           </div>
           <div class="body">
             <h3>BMW</h3>
@@ -239,7 +249,7 @@
         <a class="team-card" href="Cadillac.html" style="--c: #e6b84a">
           <div class="media" style="view-transition-name: car-cadillac">
             <span class="badge">4e en 2026</span>
-            <img src="assets/img/cadillac-3.webp" alt="Cadillac V-Series.R" loading="lazy">
+            <img src="assets/img/cadillac-26-12n.webp" alt="Cadillac V-Series.R" loading="lazy">
           </div>
           <div class="body">
             <h3>Cadillac</h3>
@@ -250,7 +260,7 @@
         <a class="team-card" href="Peugeot.html" style="--c: #c6f432">
           <div class="media" style="view-transition-name: car-peugeot">
             
-            <img src="assets/img/peugeot-1.webp" alt="Peugeot 9X8" loading="lazy">
+            <img src="assets/img/peugeot-26-94.webp" alt="Peugeot 9X8" loading="lazy">
           </div>
           <div class="body">
             <h3>Peugeot</h3>
@@ -261,7 +271,7 @@
         <a class="team-card" href="Alpine.html" style="--c: #4f8dff">
           <div class="media" style="view-transition-name: car-alpine">
             <span class="badge">Nouveau</span>
-            <div class="silhouette"><span class="ph">Photo à venir</span></div>
+            <img src="assets/img/alpine-26-36.webp" alt="Alpine A424" loading="lazy">
           </div>
           <div class="body">
             <h3>Alpine</h3>
@@ -272,7 +282,7 @@
         <a class="team-card" href="AstonMartin.html" style="--c: #2fd3a0">
           <div class="media" style="view-transition-name: car-aston">
             <span class="badge">Nouveau</span>
-            <div class="silhouette"><span class="ph">Photo à venir</span></div>
+            <img src="assets/img/aston-26-007.webp" alt="Aston Martin Valkyrie" loading="lazy">
           </div>
           <div class="body">
             <h3>Aston Martin</h3>
@@ -283,7 +293,7 @@
         <a class="team-card" href="Genesis.html" style="--c: #ff7a2f">
           <div class="media" style="view-transition-name: car-genesis">
             <span class="badge">Nouveau 2026</span>
-            <div class="silhouette"><span class="ph">Photo à venir</span></div>
+            <img src="assets/img/genesis-26-19.webp" alt="Genesis GMR-001" loading="lazy">
           </div>
           <div class="body">
             <h3>Genesis</h3>
@@ -300,7 +310,7 @@
         <a class="team-card" href="Porsche.html" style="--c: #ff3347">
           <div class="media" style="view-transition-name: car-porsche">
             <span class="badge dark">Absent en 2026</span>
-            <img src="assets/img/porsche-1.webp" alt="Porsche 963" loading="lazy">
+            <img src="assets/img/porsche-23-6.webp" alt="Porsche 963" loading="lazy">
           </div>
           <div class="body">
             <h3>Porsche</h3>
@@ -340,6 +350,12 @@
         <a href="Pilotes.html"><span class="ico">🧑‍🚀</span><h3>Les pilotes</h3><p>Les vainqueurs de l'ère Hypercar et leurs exploits.</p><span class="go">→</span></a>
         <a href="Comparateur.html"><span class="ico">⚖️</span><h3>Comparateur</h3><p>Mettez deux hypercars face à face.</p><span class="go">→</span></a>
         <a href="Quiz.html"><span class="ico">❓</span><h3>Quiz</h3><p>Êtes-vous incollable sur Le Mans ?</p><span class="go">→</span></a>
+        <a href="Resultats.html"><span class="ico">🏁</span><h3>Tous les résultats</h3><p>Podiums et vainqueurs de chaque catégorie, de 2023 à 2026.</p><span class="go">→</span></a>
+        <a href="Venir.html"><span class="ico">🎟️</span><h3>Venir en 2027</h3><p>Le programme de la semaine et nos conseils pour vivre la course.</p><span class="go">→</span></a>
+        <a href="Jeu.html"><span class="ico">🛞</span><h3>Jeu des stands</h3><p>Réussirez-vous l'arrêt aux stands parfait ?</p><span class="go">→</span></a>
+        <a href="Strategie.html"><span class="ico">🧠</span><h3>Simulateur de stratégie</h3><p>Relais, pneus, safety car : préparez votre course.</p><span class="go">→</span></a>
+        <a href="Lexique.html"><span class="ico">📖</span><h3>Lexique</h3><p>Tous les mots de l'endurance expliqués simplement.</p><span class="go">→</span></a>
+        <a href="FondsEcran.html"><span class="ico">🖼️</span><h3>Fonds d'écran</h3><p>Créez un fond d'écran aux couleurs de votre écurie.</p><span class="go">→</span></a>
       </div>
     </div>
   </section>
@@ -387,11 +403,11 @@
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">Un site de passionné consacré aux hypercars des 24 Heures du Mans, de l'édition du centenaire à aujourd'hui.</p>
     </div>
     <div>
-      <h4>Grille 2026</h4>
+      <h2 class="foot-title">Grille 2026</h2>
       <ul><li><a href="Toyota.html">Toyota</a></li><li><a href="Ferrari.html">Ferrari</a></li><li><a href="BMW.html">BMW</a></li><li><a href="Cadillac.html">Cadillac</a></li><li><a href="Peugeot.html">Peugeot</a></li><li><a href="Alpine.html">Alpine</a></li><li><a href="AstonMartin.html">Aston Martin</a></li><li><a href="Genesis.html">Genesis</a></li></ul>
     </div>
     <div>
-      <h4>Explorer</h4>
+      <h2 class="foot-title">Explorer</h2>
       <ul>
         <li><a href="Circuit.html">Circuit</a></li>
         <li><a href="Comprendre.html">Comprendre</a></li>
@@ -399,11 +415,18 @@
         <li><a href="Pilotes.html">Pilotes</a></li>
         <li><a href="Comparateur.html">Comparateur</a></li>
         <li><a href="Quiz.html">Quiz</a></li>
+        <li><a href="Resultats.html">Résultats</a></li>
+        <li><a href="Venir.html">Venir en 2027</a></li>
+        <li><a href="Jeu.html">Jeu des stands</a></li>
+        <li><a href="Strategie.html">Stratégie</a></li>
+        <li><a href="Lexique.html">Lexique</a></li>
+        <li><a href="FondsEcran.html">Fonds d'écran</a></li>
         <li><a href="Archives.html">Archives</a></li>
+        <li><a href="Credits.html">Crédits photos</a></li>
       </ul>
     </div>
     <div>
-      <h4>Liens</h4>
+      <h2 class="foot-title">Liens</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">ACO (organisateur)</a></li>

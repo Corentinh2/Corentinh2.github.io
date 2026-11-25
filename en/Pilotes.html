@@ -25,7 +25,9 @@
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
   <link rel="stylesheet" href="../assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="../assets/js/main.js" defer></script>
@@ -65,12 +67,19 @@
       <li><a href="Comprendre.html">Guide</a></li>
       <li class="has-mega">
         <button aria-expanded="false">More</button>
-        <div class="mega small">
+        <div class="mega small two">
+          <a href="Resultats.html"><span>Results</span></a>
           <a href="Histoire.html"><span>History</span></a>
           <a href="Pilotes.html" aria-current="page"><span>Drivers</span></a>
+          <a href="Venir.html"><span>Visit in 2027</span></a>
           <a href="Comparateur.html"><span>Compare</span></a>
+          <a href="Strategie.html"><span>Strategy</span></a>
           <a href="Quiz.html"><span>Quiz</span></a>
+          <a href="Jeu.html"><span>Pit stop game</span></a>
+          <a href="Lexique.html"><span>Glossary</span></a>
+          <a href="FondsEcran.html"><span>Wallpapers</span></a>
           <a href="Archives.html"><span>Archives</span></a>
+          <a href="Credits.html"><span>Photo credits</span></a>
         </div>
       </li>
       <li><a href="me_contacter.html">Contact</a></li>
@@ -94,22 +103,25 @@
       <div class="section-head" data-reveal><span class="eyebrow">2023 → 2026</span><h2>The winning crews</h2></div>
       <div class="crew" style="--c: #ff3b1f" data-reveal>
         <div class="crew-head"><span class="crew-year">2023</span><span class="crew-car">Ferrari 499P #51</span></div>
+        <div class="crew-photo"><img src="../assets/img/pilotes-2023.webp" alt="Ferrari 499P #51" loading="lazy"></div>
         <div class="drivers" data-stagger>
-          <article class="driver"><div class="avatar"><span>AP</span><i class="cc">IT</i></div><h3>Alessandro Pier Guidi</h3><p>A GT racing specialist with Ferrari, he takes the overall win at the centenary.</p></article>
+          <article class="driver"><div class="avatar"><img src="../assets/img/p-pierguidi.webp" alt="Alessandro Pier Guidi" loading="lazy"><i class="cc">IT</i></div><h3>Alessandro Pier Guidi</h3><p>A GT racing specialist with Ferrari, he takes the overall win at the centenary.</p></article>
           <article class="driver"><div class="avatar"><span>JC</span><i class="cc">GB</i></div><h3>James Calado</h3><p>A Ferrari endurance stalwart, already a GT class winner at Le Mans.</p></article>
           <article class="driver"><div class="avatar"><span>AG</span><i class="cc">IT</i></div><h3>Antonio Giovinazzi</h3><p>Former Formula 1 driver with Alfa Romeo, successfully converted to endurance racing.</p></article>
         </div>
       </div>
       <div class="crew" style="--c: #ff3b1f" data-reveal>
         <div class="crew-head"><span class="crew-year">2024</span><span class="crew-car">Ferrari 499P #50</span></div>
+        <div class="crew-photo"><img src="../assets/img/pilotes-2024.webp" alt="Ferrari 499P #50" loading="lazy"></div>
         <div class="drivers" data-stagger>
-          <article class="driver"><div class="avatar"><span>AF</span><i class="cc">IT</i></div><h3>Antonio Fuoco</h3><p>Ferrari driver known for his one-lap speed.</p></article>
+          <article class="driver"><div class="avatar"><img src="../assets/img/p-fuoco.webp" alt="Antonio Fuoco" loading="lazy"><i class="cc">IT</i></div><h3>Antonio Fuoco</h3><p>Ferrari driver known for his one-lap speed.</p></article>
           <article class="driver"><div class="avatar"><span>MM</span><i class="cc">ES</i></div><h3>Miguel Molina</h3><p>Spanish driver with a long GT career at Ferrari.</p></article>
           <article class="driver"><div class="avatar"><span>NN</span><i class="cc">DK</i></div><h3>Nicklas Nielsen</h3><p>The Dane brings Ferrari its second win in a row, in the rain.</p></article>
         </div>
       </div>
       <div class="crew" style="--c: #ff3b1f" data-reveal>
         <div class="crew-head"><span class="crew-year">2025</span><span class="crew-car">Ferrari 499P #83 · AF Corse</span></div>
+        <div class="crew-photo"><img src="../assets/img/p-kubica.webp" alt="Ferrari 499P #83 · AF Corse" loading="lazy"></div>
         <div class="drivers" data-stagger>
           <article class="driver"><div class="avatar"><span>RK</span><i class="cc">PL</i></div><h3>Robert Kubica</h3><p>Former F1 driver, badly injured in a rally crash in 2011, he made an incredible comeback and became the first Polish winner at Le Mans.</p></article>
           <article class="driver"><div class="avatar"><span>YY</span><i class="cc">CN</i></div><h3>Yifei Ye</h3><p>He became the first Chinese driver to win the 24 Hours overall.</p></article>
@@ -118,10 +130,11 @@
       </div>
       <div class="crew" style="--c: #ff2b3d" data-reveal>
         <div class="crew-head"><span class="crew-year">2026</span><span class="crew-car">Toyota TR010 Hybrid #7</span></div>
+        <div class="crew-photo"><img src="../assets/img/pilotes-2026.webp" alt="Toyota TR010 Hybrid #7" loading="lazy"></div>
         <div class="drivers" data-stagger>
-          <article class="driver"><div class="avatar"><span>MC</span><i class="cc">GB</i></div><h3>Mike Conway</h3><p>His second Le Mans win after 2021 with Toyota.</p></article>
-          <article class="driver"><div class="avatar"><span>KK</span><i class="cc">JP</i></div><h3>Kamui Kobayashi</h3><p>Also a double winner (2021, 2026), he holds the pole record on the current layout.</p></article>
-          <article class="driver"><div class="avatar"><span>Nd</span><i class="cc">NL</i></div><h3>Nyck de Vries</h3><p>Formula E champion and former F1 driver, he takes his first Le Mans win.</p></article>
+          <article class="driver"><div class="avatar"><img src="../assets/img/p-conway.webp" alt="Mike Conway" loading="lazy"><i class="cc">GB</i></div><h3>Mike Conway</h3><p>His second Le Mans win after 2021 with Toyota.</p></article>
+          <article class="driver"><div class="avatar"><img src="../assets/img/p-kobayashi.webp" alt="Kamui Kobayashi" loading="lazy"><i class="cc">JP</i></div><h3>Kamui Kobayashi</h3><p>Also a double winner (2021, 2026), he holds the pole record on the current layout.</p></article>
+          <article class="driver"><div class="avatar"><img src="../assets/img/p-devries.webp" alt="Nyck de Vries" loading="lazy"><i class="cc">NL</i></div><h3>Nyck de Vries</h3><p>Formula E champion and former F1 driver, he takes his first Le Mans win.</p></article>
         </div>
       </div>
     </div>
@@ -146,11 +159,11 @@
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">A fan site about the hypercars of the 24 Hours of Le Mans, from the centenary race to today.</p>
     </div>
     <div>
-      <h4>2026 grid</h4>
+      <h2 class="foot-title">2026 grid</h2>
       <ul><li><a href="Toyota.html">Toyota</a></li><li><a href="Ferrari.html">Ferrari</a></li><li><a href="BMW.html">BMW</a></li><li><a href="Cadillac.html">Cadillac</a></li><li><a href="Peugeot.html">Peugeot</a></li><li><a href="Alpine.html">Alpine</a></li><li><a href="AstonMartin.html">Aston Martin</a></li><li><a href="Genesis.html">Genesis</a></li></ul>
     </div>
     <div>
-      <h4>Explore</h4>
+      <h2 class="foot-title">Explore</h2>
       <ul>
         <li><a href="Circuit.html">Circuit</a></li>
         <li><a href="Comprendre.html">Guide</a></li>
@@ -158,11 +171,18 @@
         <li><a href="Pilotes.html">Drivers</a></li>
         <li><a href="Comparateur.html">Compare</a></li>
         <li><a href="Quiz.html">Quiz</a></li>
+        <li><a href="Resultats.html">Results</a></li>
+        <li><a href="Venir.html">Visit in 2027</a></li>
+        <li><a href="Jeu.html">Pit stop game</a></li>
+        <li><a href="Strategie.html">Strategy</a></li>
+        <li><a href="Lexique.html">Glossary</a></li>
+        <li><a href="FondsEcran.html">Wallpapers</a></li>
         <li><a href="Archives.html">Archives</a></li>
+        <li><a href="Credits.html">Photo credits</a></li>
       </ul>
     </div>
     <div>
-      <h4>Links</h4>
+      <h2 class="foot-title">Links</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">ACO (organiser)</a></li>

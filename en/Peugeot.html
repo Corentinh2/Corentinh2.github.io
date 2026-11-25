@@ -25,7 +25,9 @@
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="preload" as="image" href="../assets/img/peugeot-26-94.webp" fetchpriority="high">
   <link rel="stylesheet" href="../assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="../assets/js/main.js" defer></script>
@@ -66,12 +68,19 @@
       <li><a href="Comprendre.html">Guide</a></li>
       <li class="has-mega">
         <button aria-expanded="false">More</button>
-        <div class="mega small">
+        <div class="mega small two">
+          <a href="Resultats.html"><span>Results</span></a>
           <a href="Histoire.html"><span>History</span></a>
           <a href="Pilotes.html"><span>Drivers</span></a>
+          <a href="Venir.html"><span>Visit in 2027</span></a>
           <a href="Comparateur.html"><span>Compare</span></a>
+          <a href="Strategie.html"><span>Strategy</span></a>
           <a href="Quiz.html"><span>Quiz</span></a>
+          <a href="Jeu.html"><span>Pit stop game</span></a>
+          <a href="Lexique.html"><span>Glossary</span></a>
+          <a href="FondsEcran.html"><span>Wallpapers</span></a>
           <a href="Archives.html"><span>Archives</span></a>
+          <a href="Credits.html"><span>Photo credits</span></a>
         </div>
       </li>
       <li><a href="me_contacter.html">Contact</a></li>
@@ -81,7 +90,7 @@
 
 <main id="contenu">
   <header class="team-hero">
-    <div class="bg" style="view-transition-name: car-peugeot"><img src="../assets/img/peugeot-1.webp" alt="" data-parallax="0.25" fetchpriority="high"></div>
+    <div class="bg" style="view-transition-name: car-peugeot"><img src="../assets/img/peugeot-26-94.webp" alt="" data-parallax="0.25" fetchpriority="high"></div>
     <span class="number" aria-hidden="true">93</span>
     <div class="container">
       <span class="eyebrow">Hypercar team</span>
@@ -136,6 +145,8 @@
     <div class="container">
       <div class="section-head" data-reveal><span class="eyebrow">Gallery</span><h2>In pictures</h2></div>
       <div class="gallery" data-stagger="zoom">
+        <button aria-label="Enlarge photo"><img src="../assets/img/peugeot-26-94.webp" alt="Peugeot 9X8" loading="lazy"></button>
+        <button aria-label="Enlarge photo"><img src="../assets/img/peugeot-26-93.webp" alt="Peugeot 9X8" loading="lazy"></button>
         <button aria-label="Enlarge photo"><img src="../assets/img/peugeot-1.webp" alt="Peugeot 9X8" loading="lazy"></button>
         <button aria-label="Enlarge photo"><img src="../assets/img/peugeot-2.webp" alt="Peugeot 9X8" loading="lazy"></button>
         <button aria-label="Enlarge photo"><img src="../assets/img/peugeot-3.webp" alt="Peugeot 9X8" loading="lazy"></button>
@@ -159,11 +170,11 @@
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">A fan site about the hypercars of the 24 Hours of Le Mans, from the centenary race to today.</p>
     </div>
     <div>
-      <h4>2026 grid</h4>
+      <h2 class="foot-title">2026 grid</h2>
       <ul><li><a href="Toyota.html">Toyota</a></li><li><a href="Ferrari.html">Ferrari</a></li><li><a href="BMW.html">BMW</a></li><li><a href="Cadillac.html">Cadillac</a></li><li><a href="Peugeot.html">Peugeot</a></li><li><a href="Alpine.html">Alpine</a></li><li><a href="AstonMartin.html">Aston Martin</a></li><li><a href="Genesis.html">Genesis</a></li></ul>
     </div>
     <div>
-      <h4>Explore</h4>
+      <h2 class="foot-title">Explore</h2>
       <ul>
         <li><a href="Circuit.html">Circuit</a></li>
         <li><a href="Comprendre.html">Guide</a></li>
@@ -171,11 +182,18 @@
         <li><a href="Pilotes.html">Drivers</a></li>
         <li><a href="Comparateur.html">Compare</a></li>
         <li><a href="Quiz.html">Quiz</a></li>
+        <li><a href="Resultats.html">Results</a></li>
+        <li><a href="Venir.html">Visit in 2027</a></li>
+        <li><a href="Jeu.html">Pit stop game</a></li>
+        <li><a href="Strategie.html">Strategy</a></li>
+        <li><a href="Lexique.html">Glossary</a></li>
+        <li><a href="FondsEcran.html">Wallpapers</a></li>
         <li><a href="Archives.html">Archives</a></li>
+        <li><a href="Credits.html">Photo credits</a></li>
       </ul>
     </div>
     <div>
-      <h4>Links</h4>
+      <h2 class="foot-title">Links</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">ACO (organiser)</a></li>

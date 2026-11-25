@@ -25,7 +25,9 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
   <link rel="stylesheet" href="assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="assets/js/main.js" defer></script>
@@ -65,12 +67,19 @@
       <li><a href="Comprendre.html">Comprendre</a></li>
       <li class="has-mega">
         <button aria-expanded="false">Plus</button>
-        <div class="mega small">
+        <div class="mega small two">
+          <a href="Resultats.html"><span>Résultats</span></a>
           <a href="Histoire.html" aria-current="page"><span>Histoire</span></a>
           <a href="Pilotes.html"><span>Pilotes</span></a>
+          <a href="Venir.html"><span>Venir en 2027</span></a>
           <a href="Comparateur.html"><span>Comparateur</span></a>
+          <a href="Strategie.html"><span>Stratégie</span></a>
           <a href="Quiz.html"><span>Quiz</span></a>
+          <a href="Jeu.html"><span>Jeu des stands</span></a>
+          <a href="Lexique.html"><span>Lexique</span></a>
+          <a href="FondsEcran.html"><span>Fonds d'écran</span></a>
           <a href="Archives.html"><span>Archives</span></a>
+          <a href="Credits.html"><span>Crédits photos</span></a>
         </div>
       </li>
       <li><a href="me_contacter.html">Contact</a></li>
@@ -94,23 +103,23 @@
       <div class="year-rail" aria-hidden="true"><span class="year-now">1923</span></div>
       <ol class="timeline">
         <li data-reveal="left" data-y="1923"><div class="tl-card"><span class="tl-year">1923</span><h3>La première édition</h3><p>Les 26 et 27 mai, 33 voitures prennent le départ. André Lagache et René Léonard l'emportent sur une Chenard & Walcker.</p></div></li>
-        <li data-reveal="right" data-y="1924"><div class="tl-card"><span class="tl-year">1924</span><h3>Les « Bentley Boys »</h3><p>Bentley gagne pour la première fois. Entre 1924 et 1930, la marque anglaise remporte cinq victoires grâce à ses pilotes fortunés et audacieux.</p></div></li>
+        <li data-reveal="right" data-y="1924"><div class="tl-card"><img class="tl-img" src="assets/img/histo-bentley.webp" alt="Les « Bentley Boys »" loading="lazy"><span class="tl-year">1924</span><h3>Les « Bentley Boys »</h3><p>Bentley gagne pour la première fois. Entre 1924 et 1930, la marque anglaise remporte cinq victoires grâce à ses pilotes fortunés et audacieux.</p></div></li>
         <li data-reveal="left" data-y="1936"><div class="tl-card"><span class="tl-year">1936</span><h3>Une année sans course</h3><p>Des grèves en France empêchent l'organisation de l'épreuve. La course sera aussi interrompue de 1940 à 1948 à cause de la guerre.</p></div></li>
-        <li data-reveal="right" data-y="1955"><div class="tl-card"><span class="tl-year">1955</span><h3>La plus grande tragédie</h3><p>Un terrible accident fait plus de 80 morts parmi les spectateurs. La sécurité des circuits est ensuite profondément revue.</p></div></li>
-        <li data-reveal="left" data-y="1966"><div class="tl-card"><span class="tl-year">1966</span><h3>Ford bat Ferrari</h3><p>Après des années de domination de Ferrari, Ford signe un triplé avec la GT40. Cette rivalité a même inspiré un film.</p></div></li>
+        <li data-reveal="right" data-y="1955"><div class="tl-card"><img class="tl-img" src="assets/img/histo-jaguar.webp" alt="La plus grande tragédie" loading="lazy"><span class="tl-year">1955</span><h3>La plus grande tragédie</h3><p>Un terrible accident fait plus de 80 morts parmi les spectateurs. La sécurité des circuits est ensuite profondément revue.</p></div></li>
+        <li data-reveal="left" data-y="1966"><div class="tl-card"><img class="tl-img" src="assets/img/histo-ford.webp" alt="Ford bat Ferrari" loading="lazy"><span class="tl-year">1966</span><h3>Ford bat Ferrari</h3><p>Après des années de domination de Ferrari, Ford signe un triplé avec la GT40. Cette rivalité a même inspiré un film.</p></div></li>
         <li data-reveal="right" data-y="1969"><div class="tl-card"><span class="tl-year">1969</span><h3>La fin du départ en courant</h3><p>Jacky Ickx traverse la piste en marchant pour protester contre le départ « type Le Mans » où les pilotes couraient vers leur voiture. Il gagne quand même ! Ce départ est abandonné l'année suivante.</p></div></li>
-        <li data-reveal="left" data-y="1970"><div class="tl-card"><span class="tl-year">1970</span><h3>Première victoire Porsche</h3><p>La légendaire 917 offre à Porsche la première de ses 19 victoires, un record.</p></div></li>
-        <li data-reveal="right" data-y="1978"><div class="tl-card"><span class="tl-year">1978</span><h3>La France gagne avec Alpine</h3><p>La Renault-Alpine A442B de Didier Pironi et Jean-Pierre Jaussaud s'impose.</p></div></li>
-        <li data-reveal="left" data-y="1991"><div class="tl-card"><span class="tl-year">1991</span><h3>Le moteur rotatif de Mazda</h3><p>La Mazda 787B devient la première voiture japonaise et la seule à moteur rotatif à gagner au Mans. Son cri est resté célèbre.</p></div></li>
+        <li data-reveal="left" data-y="1970"><div class="tl-card"><img class="tl-img" src="assets/img/histo-porsche917.webp" alt="Première victoire Porsche" loading="lazy"><span class="tl-year">1970</span><h3>Première victoire Porsche</h3><p>La légendaire 917 offre à Porsche la première de ses 19 victoires, un record.</p></div></li>
+        <li data-reveal="right" data-y="1978"><div class="tl-card"><img class="tl-img" src="assets/img/histo-alpine.webp" alt="La France gagne avec Alpine" loading="lazy"><span class="tl-year">1978</span><h3>La France gagne avec Alpine</h3><p>La Renault-Alpine A442B de Didier Pironi et Jean-Pierre Jaussaud s'impose.</p></div></li>
+        <li data-reveal="left" data-y="1991"><div class="tl-card"><img class="tl-img" src="assets/img/histo-mazda.webp" alt="Le moteur rotatif de Mazda" loading="lazy"><span class="tl-year">1991</span><h3>Le moteur rotatif de Mazda</h3><p>La Mazda 787B devient la première voiture japonaise et la seule à moteur rotatif à gagner au Mans. Son cri est resté célèbre.</p></div></li>
         <li data-reveal="right" data-y="1999"><div class="tl-card"><span class="tl-year">1999</span><h3>BMW gagne</h3><p>La V12 LMR offre à BMW son unique victoire au classement général.</p></div></li>
         <li data-reveal="left" data-y="2006"><div class="tl-card"><span class="tl-year">2006</span><h3>La première victoire d'un diesel</h3><p>L'Audi R10 TDI gagne avec un moteur diesel. Audi remporte 13 victoires entre 2000 et 2014 ; en 2012, la R18 e-tron quattro devient la première hybride victorieuse.</p></div></li>
-        <li data-reveal="right" data-y="2009"><div class="tl-card"><span class="tl-year">2009</span><h3>Peugeot détrône Audi</h3><p>La Peugeot 908 HDi FAP signe un doublé et offre au Lion sa troisième victoire.</p></div></li>
-        <li data-reveal="left" data-y="2013"><div class="tl-card"><span class="tl-year">2013</span><h3>Le record de Tom Kristensen</h3><p>Le Danois remporte sa 9e victoire, un record absolu. On le surnomme « Monsieur Le Mans ».</p></div></li>
+        <li data-reveal="right" data-y="2009"><div class="tl-card"><img class="tl-img" src="assets/img/histo-peugeot908.webp" alt="Peugeot détrône Audi" loading="lazy"><span class="tl-year">2009</span><h3>Peugeot détrône Audi</h3><p>La Peugeot 908 HDi FAP signe un doublé et offre au Lion sa troisième victoire.</p></div></li>
+        <li data-reveal="left" data-y="2013"><div class="tl-card"><img class="tl-img" src="assets/img/histo-audi.webp" alt="Le record de Tom Kristensen" loading="lazy"><span class="tl-year">2013</span><h3>Le record de Tom Kristensen</h3><p>Le Danois remporte sa 9e victoire, un record absolu. On le surnomme « Monsieur Le Mans ».</p></div></li>
         <li data-reveal="right" data-y="2016"><div class="tl-card"><span class="tl-year">2016</span><h3>Le cauchemar de Toyota</h3><p>En tête à quelques minutes de l'arrivée, la Toyota n°5 tombe en panne dans le dernier tour. Porsche s'impose.</p></div></li>
-        <li data-reveal="left" data-y="2018"><div class="tl-card"><span class="tl-year">2018</span><h3>Toyota enfin vainqueur</h3><p>Avec Fernando Alonso, Sébastien Buemi et Kazuki Nakajima, Toyota gagne pour la première fois. Cinq victoires suivront jusqu'en 2022.</p></div></li>
+        <li data-reveal="left" data-y="2018"><div class="tl-card"><img class="tl-img" src="assets/img/histo-toyota.webp" alt="Toyota enfin vainqueur" loading="lazy"><span class="tl-year">2018</span><h3>Toyota enfin vainqueur</h3><p>Avec Fernando Alonso, Sébastien Buemi et Kazuki Nakajima, Toyota gagne pour la première fois. Cinq victoires suivront jusqu'en 2022.</p></div></li>
         <li data-reveal="right" data-y="2021"><div class="tl-card"><span class="tl-year">2021</span><h3>L'ère Hypercar commence</h3><p>La nouvelle catégorie Hypercar remplace les LMP1. Toyota gagne avec la GR010.</p></div></li>
-        <li data-reveal="left" data-y="2023"><div class="tl-card"><span class="tl-year">2023</span><h3>Le centenaire</h3><p>Ferrari revient et gagne dès sa première participation avec la 499P, devant plus de 300 000 spectateurs.</p></div></li>
-        <li data-reveal="right" data-y="2026"><div class="tl-card"><span class="tl-year">2026</span><h3>Le retour de Toyota</h3><p>Après trois victoires Ferrari, la Toyota TR010 n°7 l'emporte devant la BMW n°20.</p></div></li>
+        <li data-reveal="left" data-y="2023"><div class="tl-card"><img class="tl-img" src="assets/img/ferrari-3.webp" alt="Le centenaire" loading="lazy"><span class="tl-year">2023</span><h3>Le centenaire</h3><p>Ferrari revient et gagne dès sa première participation avec la 499P, devant plus de 300 000 spectateurs.</p></div></li>
+        <li data-reveal="right" data-y="2026"><div class="tl-card"><img class="tl-img" src="assets/img/toyota-26-7.webp" alt="Le retour de Toyota" loading="lazy"><span class="tl-year">2026</span><h3>Le retour de Toyota</h3><p>Après trois victoires Ferrari, la Toyota TR010 n°7 l'emporte devant la BMW n°20.</p></div></li>
       </ol>
     </div>
   </section>
@@ -123,11 +132,11 @@
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">Un site de passionné consacré aux hypercars des 24 Heures du Mans, de l'édition du centenaire à aujourd'hui.</p>
     </div>
     <div>
-      <h4>Grille 2026</h4>
+      <h2 class="foot-title">Grille 2026</h2>
       <ul><li><a href="Toyota.html">Toyota</a></li><li><a href="Ferrari.html">Ferrari</a></li><li><a href="BMW.html">BMW</a></li><li><a href="Cadillac.html">Cadillac</a></li><li><a href="Peugeot.html">Peugeot</a></li><li><a href="Alpine.html">Alpine</a></li><li><a href="AstonMartin.html">Aston Martin</a></li><li><a href="Genesis.html">Genesis</a></li></ul>
     </div>
     <div>
-      <h4>Explorer</h4>
+      <h2 class="foot-title">Explorer</h2>
       <ul>
         <li><a href="Circuit.html">Circuit</a></li>
         <li><a href="Comprendre.html">Comprendre</a></li>
@@ -135,11 +144,18 @@
         <li><a href="Pilotes.html">Pilotes</a></li>
         <li><a href="Comparateur.html">Comparateur</a></li>
         <li><a href="Quiz.html">Quiz</a></li>
+        <li><a href="Resultats.html">Résultats</a></li>
+        <li><a href="Venir.html">Venir en 2027</a></li>
+        <li><a href="Jeu.html">Jeu des stands</a></li>
+        <li><a href="Strategie.html">Stratégie</a></li>
+        <li><a href="Lexique.html">Lexique</a></li>
+        <li><a href="FondsEcran.html">Fonds d'écran</a></li>
         <li><a href="Archives.html">Archives</a></li>
+        <li><a href="Credits.html">Crédits photos</a></li>
       </ul>
     </div>
     <div>
-      <h4>Liens</h4>
+      <h2 class="foot-title">Liens</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">ACO (organisateur)</a></li>

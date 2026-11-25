@@ -15,6 +15,13 @@ en français et en anglais. En ligne sur https://corentinh2.github.io/
 | `Pilotes.html` | Équipages vainqueurs et recordmen |
 | `Comparateur.html` | Deux hypercars face à face |
 | `Quiz.html` | 12 questions avec score |
+| `Resultats.html` | Podiums et vainqueurs de catégorie 2023-2026 |
+| `Venir.html` | Programme 2027, liste à cocher, infos pratiques |
+| `Lexique.html` | Lexique de l'endurance avec recherche |
+| `Jeu.html` | Mini-jeu de l'arrêt aux stands |
+| `Strategie.html` | Simulateur de stratégie |
+| `FondsEcran.html` | Générateur de fonds d'écran |
+| `Credits.html` | Auteurs et licences des photos |
 | `Archives.html`, `me_contacter.html`, `404.html`, `offline.html` | Pages annexes |
 | `en/` | Version anglaise de toutes les pages |
 
@@ -26,7 +33,8 @@ Autres fonctions : thème clair/sombre, mode hors connexion (`sw.js`), installab
 **Les pages HTML sont générées : ne les modifie pas à la main**, sinon la version française
 et la version anglaise ne seront plus identiques. Modifie plutôt :
 
-- `_build/i18n/fr.mjs` et `_build/i18n/en.mjs` pour les textes ;
+- `_build/i18n/fr.mjs`, `fr-extra.mjs`, `en.mjs` et `en-extra.mjs` pour les textes ;
+- `_build/credits.json` pour les auteurs et licences des photos ;
 - `_build/data.mjs` pour les données (écuries, couleurs, moteurs, photos) ;
 - `_build/build.mjs` pour la structure des pages ;
 - `assets/css/style.css` et `assets/js/` pour le style et les animations.
@@ -43,7 +51,13 @@ Le dossier `_build/` n'est pas publié par GitHub Pages.
 
 Place l'image (idéalement en `.webp`, 1600 px de large maximum) dans `assets/img/`, puis indique son nom
 dans `_build/data.mjs` (`img` pour l'en-tête, `gallery` pour la galerie) et régénère le site.
-Pense à citer l'auteur et la licence si la photo vient de Wikimedia Commons.
+Si la photo vient de Wikimedia Commons, ajoute son auteur et sa licence dans `_build/credits.json`.
+
+## Compteur de visites
+
+Le site est prêt pour [GoatCounter](https://www.goatcounter.com), un compteur gratuit qui respecte la vie privée
+(pas de cookies). Crée un compte, puis indique ton code dans `GOATCOUNTER` (fichier `_build/data.mjs`)
+et régénère le site.
 
 ## Tester en local
 

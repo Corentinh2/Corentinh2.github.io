@@ -25,7 +25,9 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
   <link rel="stylesheet" href="assets/css/style.css">
   <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <script src="assets/js/main.js" defer></script>
@@ -66,12 +68,19 @@
       <li><a href="Comprendre.html">Comprendre</a></li>
       <li class="has-mega">
         <button aria-expanded="false">Plus</button>
-        <div class="mega small">
+        <div class="mega small two">
+          <a href="Resultats.html"><span>Résultats</span></a>
           <a href="Histoire.html"><span>Histoire</span></a>
           <a href="Pilotes.html"><span>Pilotes</span></a>
+          <a href="Venir.html"><span>Venir en 2027</span></a>
           <a href="Comparateur.html"><span>Comparateur</span></a>
+          <a href="Strategie.html"><span>Stratégie</span></a>
           <a href="Quiz.html"><span>Quiz</span></a>
+          <a href="Jeu.html"><span>Jeu des stands</span></a>
+          <a href="Lexique.html"><span>Lexique</span></a>
+          <a href="FondsEcran.html"><span>Fonds d'écran</span></a>
           <a href="Archives.html"><span>Archives</span></a>
+          <a href="Credits.html"><span>Crédits photos</span></a>
         </div>
       </li>
       <li><a href="me_contacter.html">Contact</a></li>
@@ -173,11 +182,11 @@
       <p class="muted" style="max-width: 40ch; margin-top: 16px;">Un site de passionné consacré aux hypercars des 24 Heures du Mans, de l'édition du centenaire à aujourd'hui.</p>
     </div>
     <div>
-      <h4>Grille 2026</h4>
+      <h2 class="foot-title">Grille 2026</h2>
       <ul><li><a href="Toyota.html">Toyota</a></li><li><a href="Ferrari.html">Ferrari</a></li><li><a href="BMW.html">BMW</a></li><li><a href="Cadillac.html">Cadillac</a></li><li><a href="Peugeot.html">Peugeot</a></li><li><a href="Alpine.html">Alpine</a></li><li><a href="AstonMartin.html">Aston Martin</a></li><li><a href="Genesis.html">Genesis</a></li></ul>
     </div>
     <div>
-      <h4>Explorer</h4>
+      <h2 class="foot-title">Explorer</h2>
       <ul>
         <li><a href="Circuit.html">Circuit</a></li>
         <li><a href="Comprendre.html">Comprendre</a></li>
@@ -185,11 +194,18 @@
         <li><a href="Pilotes.html">Pilotes</a></li>
         <li><a href="Comparateur.html">Comparateur</a></li>
         <li><a href="Quiz.html">Quiz</a></li>
+        <li><a href="Resultats.html">Résultats</a></li>
+        <li><a href="Venir.html">Venir en 2027</a></li>
+        <li><a href="Jeu.html">Jeu des stands</a></li>
+        <li><a href="Strategie.html">Stratégie</a></li>
+        <li><a href="Lexique.html">Lexique</a></li>
+        <li><a href="FondsEcran.html">Fonds d'écran</a></li>
         <li><a href="Archives.html">Archives</a></li>
+        <li><a href="Credits.html">Crédits photos</a></li>
       </ul>
     </div>
     <div>
-      <h4>Liens</h4>
+      <h2 class="foot-title">Liens</h2>
       <ul>
         <li><a href="https://www.24h-lemans.com/" target="_blank" rel="noopener">24h-lemans.com</a></li>
         <li><a href="https://www.lemans.org/" target="_blank" rel="noopener">ACO (organisateur)</a></li>

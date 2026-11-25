@@ -1,10 +1,17 @@
 /* Service worker : permet de consulter le site hors connexion.
    Fichier généré par _build/build.mjs — ne pas modifier directement. */
-const VERSION = "7b56a76782";
+const VERSION = "c1040186a3";
 const CACHE = `lemans-${VERSION}`;
 const PRECACHE = [
   "/",
   "/en/",
+  "/Resultats.html",
+  "/Venir.html",
+  "/Lexique.html",
+  "/Jeu.html",
+  "/Strategie.html",
+  "/FondsEcran.html",
+  "/Credits.html",
   "/index.html",
   "/Toyota.html",
   "/Ferrari.html",
@@ -24,6 +31,13 @@ const PRECACHE = [
   "/Quiz.html",
   "/Archives.html",
   "/me_contacter.html",
+  "/en/Resultats.html",
+  "/en/Venir.html",
+  "/en/Lexique.html",
+  "/en/Jeu.html",
+  "/en/Strategie.html",
+  "/en/FondsEcran.html",
+  "/en/Credits.html",
   "/en/index.html",
   "/en/Toyota.html",
   "/en/Ferrari.html",
@@ -49,8 +63,12 @@ const PRECACHE = [
   "/assets/js/circuit.js",
   "/assets/js/compare.js",
   "/assets/js/engine.js",
+  "/assets/js/game.js",
   "/assets/js/main.js",
   "/assets/js/quiz.js",
+  "/assets/js/strategy.js",
+  "/assets/js/tools.js",
+  "/assets/js/wallpaper.js",
   "/assets/img/centenaire.webp",
   "/assets/img/icon-192.png",
   "/assets/img/icon-512.png",

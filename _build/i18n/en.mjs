@@ -280,12 +280,13 @@ export default {
     eyebrow: "The guide", h1: ["Understand", "the race"],
     lead: "Three classes on track at the same time, strict driving rules and flags to know: here is the essential to follow the 24 Hours.",
     classesEyebrow: "On track", classesTitle: "Three classes, one race",
-    classesLead: "All cars race together, but each class has its own ranking. Race numbers have a different colour for each class.",
+    classesLead: "All cars race together, but each class has its own ranking. Race numbers have a different colour for each class: the plate on each card shows an example.",
     classes: [
       ["#ff2b3d", "Hypercar", "The top class", "Prototypes from the big manufacturers, mostly hybrid, at around 680 hp. They fight for overall victory."],
       ["#3d8bff", "LMP2", "Private prototypes", "The same Oreca chassis and Gibson V8 engine for everyone. Teams mix professional and amateur drivers."],
       ["#ff9f1a", "LMGT3", "Production-based cars", "GT cars derived from road models (Ferrari 296, Porsche 911, Corvette…). Since 2024 they replace the GTE cars."],
     ],
+    plates: [["7", "e.g. Toyota #7"], ["28", "e.g. IDEC Sport #28"], ["33", "e.g. Corvette #33"]],
     lmhTitle: "LMH or LMDh?", lmhLead: "Two rule sets coexist in Hypercar. The aim: to attract more manufacturers at a reasonable cost.",
     lmhCols: ["", "LMH (Le Mans Hypercar)", "LMDh (Le Mans Daytona h)"],
     lmhRows: [
