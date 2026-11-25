@@ -1,79 +1,93 @@
 /* =========================================================
    Dessins vectoriels des hypercars (vue de profil).
-   Tracés originaux, faits à la main à partir des proportions
-   de chaque voiture : aucune photo n'est utilisée.
+   Tracés originaux, dessinés à la main en observant les photos
+   des voitures (proportions, formes, livrées 2026) : aucune
+   photo n'est copiée ni utilisée dans le rendu.
    Repère : 420 × 130, voiture tournée vers la gauche,
    roues avant (x = 86) et arrière (x = 338), sol à y = 122.
    ========================================================= */
 (() => {
-  // Valeurs par défaut d'un prototype Hypercar (proportions : 5 m de long,
-  // 1,05 m de haut, roues de 72 cm, empattement de 3,15 m)
+  // Valeurs par défaut : un prototype bas, plat et anguleux
   const BASE = {
-    nose: 96, lip: 80,            // museau : hauteur de la pointe et de la lèvre
-    fx: 92, fy: 50,               // sommet de l'aile avant (au-dessus de la roue avant)
-    vy: 64,                       // creux entre l'aile avant et le cockpit
-    cx: 210, cy: 38, ce: 252,     // cockpit : centre, hauteur du toit, fin du toit
-    rx: 336, rfy: 54,             // sommet de l'aile arrière (au-dessus de la roue arrière)
-    ty: 80, tl: 412,              // arrière de la voiture
-    wx: 350, wy: 26,              // aileron arrière
-    fin: true, scoop: false, bubble: false, frontGap: false,
+    nose: 104, nt: 84,            // museau : bas du bouclier, haut du capot avant
+    fx: 88, fy: 61,               // aile avant : centre et hauteur (juste au-dessus du pneu)
+    vy: 70,                       // flanc entre l'aile avant et le cockpit
+    cx: 206, cy: 40, ce: 246,     // cockpit : centre, haut de la bulle, fin du toit
+    rx: 338, rfy: 60,             // aile arrière (au-dessus de la roue arrière)
+    ty: 66, tl: 412,              // haut et bout de l'arrière
+    wx: 350, wy: 20,              // aileron : début et hauteur
+    fin: true, pylons: 1, bigEnd: false,
+    scoop: false, bubble: false, frontGap: false, vent: false, pod: true,
   };
 
-  // Particularités de chaque voiture + livrée (couleurs d'inspiration, sans logos)
+  // Particularités observées sur chaque voiture + livrée 2026 (couleurs, sans logos)
   const CARS = {
-    toyota:      { fx: 94, fy: 50, cx: 212, cy: 38, ce: 256, rfy: 54,
-                   livery: { base: "#f3f3f3", nose: "#d8001a", stripe: "#d8001a", rear: "#141414", wing: "#141414", light: "#ffffff", num: "#141414", roundel: "#ffffff" } },
-    ferrari:     { fx: 90, fy: 41, vy: 68, cx: 206, cy: 42, ce: 248, rx: 334, rfy: 45, ty: 74, wx: 358, wy: 36,
-                   livery: { base: "#cf1010", nose: "#cf1010", stripe: "#ffd400", rear: "#a30808", wing: "#141414", light: "#ffe9b0", num: "#141414", roundel: "#ffd400" } },
-    bmw:         { nose: 90, lip: 72, fx: 96, fy: 48, cy: 38, rfy: 52, wx: 344, wy: 20,
-                   livery: { base: "#eef2f7", nose: "#1c69d4", stripe: "#0a2a66", stripe2: "#e4002b", rear: "#1c69d4", wing: "#141414", light: "#ffffff", num: "#0a2a66", roundel: "#ffffff" } },
-    cadillac:    { fx: 92, fy: 52, cy: 40, rfy: 56, ty: 86, tl: 414, wx: 352, wy: 32,
-                   livery: { base: "#161616", nose: "#161616", stripe: "#ffd000", rear: "#161616", wing: "#0b0b0b", light: "#ffffff", num: "#161616", roundel: "#ffd000", vlight: true } },
-    peugeot:     { nose: 92, lip: 72, fx: 96, fy: 47, cy: 36, rfy: 49, ty: 72, wx: 356, wy: 23,
-                   livery: { base: "#3c4046", nose: "#3c4046", stripe: "#c6f432", rear: "#1e2024", wing: "#1e2024", light: "#c6f432", num: "#1e2024", roundel: "#c6f432", claws: true } },
-    alpine:      { fx: 94, fy: 50, cy: 39, rfy: 53,
-                   livery: { base: "#1f5fff", nose: "#1f5fff", stripe: "#ffffff", stripe2: "#e4002b", rear: "#0b1d55", wing: "#0b1d55", light: "#ffffff", num: "#0b1d55", roundel: "#ffffff" } },
-    aston:       { fx: 88, fy: 45, vy: 70, cx: 198, cy: 31, ce: 244, rfy: 58, ty: 84, wx: 362, wy: 38, bubble: true, frontGap: true,
-                   livery: { base: "#00594f", nose: "#00594f", stripe: "#c6ff00", rear: "#003b33", wing: "#003b33", light: "#ffffff", num: "#003b33", roundel: "#c6ff00" } },
-    genesis:     { fx: 94, fy: 50, cy: 38, rfy: 53, wy: 25,
-                   livery: { base: "#2b2b30", nose: "#2b2b30", stripe: "#ff7a2f", rear: "#ff7a2f", wing: "#141414", light: "#ffffff", num: "#2b2b30", roundel: "#ffffff", dual: true } },
-    porsche:     { fx: 92, fy: 49, cy: 39, rfy: 52,
-                   livery: { base: "#f5f5f5", nose: "#f5f5f5", stripe: "#d5001c", rear: "#141414", wing: "#141414", light: "#ffffff", num: "#141414", roundel: "#ffffff", bar: true } },
-    glickenhaus: { fx: 90, fy: 41, vy: 68, cx: 216, cy: 40, rfy: 45, ty: 74, wx: 356, scoop: true,
-                   livery: { base: "#34c1f0", nose: "#ffffff", stripe: "#e4002b", stripe2: "#ffffff", rear: "#0d3550", wing: "#0d3550", light: "#ffffff", num: "#0d3550", roundel: "#ffffff" } },
+    toyota:      { fy: 60, vy: 71, cy: 40, ty: 66, wy: 18,
+                   livery: { base: "#d0021b", nose: "#d0021b", stripe: "#ffffff", stripe2: "#141414", rear: "#141414", wing: "#141414", light: "#ffffff", num: "#d0021b", roundel: "#ffffff", lights: "slim" } },
+    ferrari:     { fx: 84, fy: 55, vy: 73, cx: 204, cy: 42, rfy: 57, ty: 62, wx: 352, wy: 22, vent: true,
+                   livery: { base: "#c8102e", nose: "#c8102e", stripe: "#ffd400", rear: "#a00a1f", wing: "#141414", light: "#ffe9b0", num: "#141414", roundel: "#ffd400", lights: "bar" } },
+    bmw:         { nt: 76, fy: 60, vy: 70, cy: 40, ty: 66, wx: 344, wy: 16, bigEnd: true,
+                   livery: { base: "#f4f4f4", nose: "#f4f4f4", stripe: "#ffd100", stripe2: "#e30613", rear: "#e30613", wing: "#141414", light: "#ffd100", num: "#ffffff", roundel: "#e30613", lights: "kidney" } },
+    cadillac:    { nose: 106, nt: 88, fx: 92, fy: 63, vy: 72, cy: 42, ce: 250, rfy: 61, ty: 72, tl: 416, wy: 28,
+                   livery: { base: "#121212", nose: "#121212", stripe: "#c9a227", rear: "#121212", wing: "#0b0b0b", light: "#ffffff", num: "#121212", roundel: "#c9a227", lights: "vertical" } },
+    peugeot:     { nt: 80, fy: 60, vy: 66, cy: 39, rfy: 58, ty: 60, wx: 346, wy: 22, fin: false, pylons: 2,
+                   livery: { base: "#151515", nose: "#151515", stripe: "#e4002b", rear: "#151515", wing: "#151515", light: "#ffffff", num: "#ffffff", roundel: "#e4002b", lights: "claws", zebra: "#f2f2f2" } },
+    alpine:      { nt: 82, fy: 60, vy: 70, cy: 40, ty: 64, wy: 18,
+                   livery: { base: "#1d3fbf", nose: "#1d3fbf", stripe: "#ffffff", stripe2: "#e4002b", rear: "#0b1d55", wing: "#0b1d55", light: "#ffffff", num: "#0b1d55", roundel: "#ffffff", lights: "slim" } },
+    aston:       { fx: 84, fy: 57, vy: 74, cx: 196, cy: 33, ce: 236, rfy: 62, ty: 70, wx: 356, wy: 24, bubble: true, frontGap: true,
+                   livery: { base: "#00665a", nose: "#00665a", stripe: "#c6ff00", rear: "#00463e", wing: "#00463e", light: "#ffffff", num: "#00463e", roundel: "#c6ff00", lights: "round" } },
+    genesis:     { fy: 60, vy: 70, cy: 39, ty: 66, wy: 18,
+                   livery: { base: "#ff7a1f", nose: "#ff7a1f", stripe: "#d81e1e", rear: "#d81e1e", wing: "#141414", light: "#ffffff", num: "#d81e1e", roundel: "#ffffff", lights: "dual" } },
+    porsche:     { nose: 105, nt: 86, fy: 61, vy: 70, cy: 41, ty: 66, wy: 18,
+                   livery: { base: "#f5f5f5", nose: "#f5f5f5", stripe: "#d5001c", rear: "#ff7a00", wing: "#141414", light: "#ffffff", num: "#141414", roundel: "#ffffff", lights: "four" } },
+    glickenhaus: { fx: 86, fy: 54, vy: 73, cx: 210, cy: 41, rfy: 56, ty: 62, wy: 20, scoop: true, pod: false,
+                   livery: { base: "#8fd3ef", nose: "#8fd3ef", stripe: "#e4002b", stripe2: "#ffffff", stripe3: "#1e3a8a", rear: "#8fd3ef", wing: "#1e3a8a", light: "#ffffff", num: "#1e3a8a", roundel: "#ffffff", lights: "round" } },
   };
 
   // Construit les tracés d'une voiture à partir de ses paramètres
   function shapes(slug) {
     const p = { ...BASE, ...(CARS[slug] || {}) };
-    const { nose, lip, fx, fy, vy, cx, cy, ce, rx, rfy, ty, tl, wx, wy } = p;
-    p.dx = rx; p.deck = rfy;
+    const { nose, nt, fx, fy, vy, cx, cy, ce, rx, rfy, ty, tl, wx, wy } = p;
     const S = {};
     S.body =
-      `M4 ${nose} C8 ${nose - 8} 30 ${lip} 46 ${lip - 6} ` +                                   // museau
-      `C60 ${fy + 12} 70 ${fy} ${fx} ${fy} ` +                                                 // montée vers l'aile avant
-      `C${fx + 22} ${fy} ${fx + 36} ${vy - 6} ${fx + 50} ${vy} ` +                              // arrière de l'aile avant
-      `C${fx + 66} ${vy + 2} ${cx - 42} ${cy + 18} ${cx - 24} ${cy + 6} ` +                     // pare-brise
-      `C${cx - 12} ${cy} ${cx + 14} ${cy - 2} ${ce} ${cy + 6} ` +                               // toit
-      `C${ce + 22} ${cy + 16} ${rx - 44} ${rfy + 4} ${rx} ${rfy} ` +                            // vers l'aile arrière
-      `C${rx + 30} ${rfy - 1} ${tl - 10} ${ty - 12} ${tl} ${ty} ` +                             // arrière
-      `L${tl} 110 L366 110 A33 33 0 1 0 310 110 L114 110 A33 33 0 1 0 58 110 L4 110 Z`;       // passages de roues
+      `M4 ${nose} L8 ${nose - 6} C18 ${nt + 8} 30 ${nt + 1} 44 ${nt - 2} ` +                   // museau et capot avant
+      `L${fx - 24} ${fy + 3} C${fx - 12} ${fy} ${fx + 14} ${fy - 1} ${fx + 28} ${fy + 1} ` +   // dessus de l'aile avant (plat)
+      `C${fx + 38} ${fy + 3} ${fx + 46} ${vy} ${fx + 58} ${vy} ` +                             // arrière de l'aile avant
+      `L${cx - 50} ${vy + 1} ` +                                                              // flanc
+      `C${cx - 36} ${vy - 6} ${cx - 24} ${cy + 4} ${cx - 6} ${cy} ` +                          // pare-brise
+      `C${cx + 10} ${cy - 2} ${ce - 10} ${cy - 1} ${ce} ${cy + 5} ` +                          // bulle du cockpit
+      `C${ce + 14} ${cy + 12} ${rx - 54} ${rfy + 3} ${rx - 24} ${rfy + 1} ` +                  // long capot arrière
+      `C${rx - 4} ${rfy - 1} ${rx + 30} ${rfy - 1} ${tl - 8} ${ty} ` +                         // aile arrière
+      `L${tl} ${ty + 4} L${tl} 104 ` +                                                        // arrière
+      `L369 104 A33 33 0 1 0 307 104 L117 104 A33 33 0 1 0 55 104 L4 104 Z`;                  // passages de roues
+    // Vitrage : pare-brise + vitre latérale de la bulle
     S.glass =
-      `M${cx - 34} ${cy + 15} C${cx - 22} ${cy + 6} ${cx - 4} ${cy + 3} ${cx + 14} ${cy + 3} ` +
-      `C${cx + 26} ${cy + 3} ${ce - 14} ${cy + 6} ${ce - 6} ${cy + 9} L${ce - 10} ${cy + 15} ` +
-      `C${cx + 10} ${cy + 12} ${cx - 14} ${cy + 14} ${cx - 34} ${cy + 20} Z`;
-    S.fin = p.fin ? `M${cx + 14} ${cy - 1} L${wx - 4} ${wy + 8} L${wx} ${rfy + 2} L${ce + 4} ${cy + 10} Z` : "";
+      `M${cx - 30} ${cy + 13} C${cx - 18} ${cy + 4} ${cx - 2} ${cy + 2} ${cx + 12} ${cy + 2} ` +
+      `C${cx + 24} ${cy + 2} ${ce - 10} ${cy + 4} ${ce - 4} ${cy + 8} L${ce - 10} ${cy + 15} ` +
+      `C${cx + 6} ${cy + 12} ${cx - 12} ${cy + 14} ${cx - 30} ${cy + 19} Z`;
+    // Haute dérive (« shark fin ») qui relie le toit à l'aileron
+    S.fin = p.fin ? `M${cx + 6} ${cy - 1} L${wx + 4} ${wy + 6} L${wx + 8} ${rfy + 2} L${ce + 6} ${cy + 12} Z` : "";
+    const endTop = p.bigEnd ? wy - 10 : wy - 5;
+    const endX = p.bigEnd ? 390 : 396;
+    const pyl = x => `M${x} ${wy + 6} C${x - 4} ${wy + 16} ${x + 6} ${rfy - 10} ${x + 2} ${rfy + 3} L${x - 4} ${rfy + 3} C${x} ${rfy - 10} ${x - 10} ${wy + 16} ${x - 6} ${wy + 6} Z `;
     S.wing =
-      `M${wx} ${wy} L414 ${wy - 4} L414 ${wy + 4} L${wx + 2} ${wy + 7} Z ` +                    // plan principal
-      `M398 ${wy - 6} L414 ${wy - 6} L414 ${ty} L398 ${ty - 6} Z ` +                             // dérive latérale
-      `M${wx + 24} ${wy + 6} L${wx + 30} ${wy + 6} L${wx + 28} ${rfy + 4} L${wx + 22} ${rfy + 4} Z`; // support
-    S.scoop = p.scoop ? `M${cx - 6} ${cy + 1} L${cx - 2} ${cy - 13} L${cx + 22} ${cy - 13} L${cx + 26} ${cy + 1} Z` : "";
-    // Valkyrie : canopée en goutte d'eau très marquée et passage d'air sous l'aile avant
-    S.bubble = p.bubble ? `M${cx - 28} ${cy + 12} C${cx - 16} ${cy - 4} ${cx + 20} ${cy - 6} ${cx + 46} ${cy + 10} Z` : "";
-    S.gap = p.frontGap ? `M34 98 C56 86 102 84 130 90 L126 96 C100 92 62 94 38 102 Z` : "";
-    S.light = `M8 ${nose - 8} L42 ${lip - 5} L45 ${lip - 1} L10 ${nose - 4} Z`;
+      `M${wx} ${wy + 1} L416 ${wy - 3} L416 ${wy + 5} L${wx + 2} ${wy + 8} Z ` +              // plan principal
+      `M${wx + 6} ${wy + 10} L414 ${wy + 7} L414 ${wy + 11} L${wx + 8} ${wy + 13} Z ` +        // volet
+      `M${endX} ${endTop} L416 ${endTop - 1} L416 ${ty + 6} L${endX} ${ty + 2} Z ` +          // dérive latérale
+      (p.pylons === 2 ? pyl(wx + 20) + pyl(wx + 44) : pyl(wx + 34));                          // col de cygne
+    S.intake = `M${fx + 40} ${vy + 6} L${cx - 54} ${vy + 7} L${cx - 58} ${vy + 18} L${fx + 46} ${vy + 18} Z`; // entrée d'air latérale
+    S.diffuser = `M${tl - 30} 104 L${tl} 104 L${tl} ${ty + 22} Z`;
+    S.splitter = `M2 106 L120 106 L120 109 L6 109 Z M300 106 L414 106 L414 108 L300 108 Z`;
+    S.scoop = p.scoop ? `M${cx - 4} ${cy + 1} L${cx} ${cy - 12} L${cx + 26} ${cy - 12} L${cx + 30} ${cy + 1} Z` : "";
+    S.pod = p.pod ? `M${cx + 4} ${cy - 1} L${cx + 6} ${cy - 6} L${cx + 20} ${cy - 6} L${cx + 22} ${cy - 1} Z` : "";
+    S.mirror = `M${fx + 6} ${fy - 1} L${fx + 10} ${fy - 9} L${fx + 24} ${fy - 9} L${fx + 22} ${fy - 1} Z`;
+    // Valkyrie : bulle en goutte d'eau et grand passage d'air sous l'aile avant
+    S.bubble = p.bubble ? `M${cx - 28} ${cy + 12} C${cx - 14} ${cy - 6} ${cx + 24} ${cy - 6} ${ce + 4} ${cy + 10} Z` : "";
+    S.gap = p.frontGap ? `M30 ${nose - 4} C52 ${fy + 24} 104 ${fy + 22} ${fx + 46} ${vy + 10} L${fx + 42} ${vy + 18} C100 ${fy + 30} 60 ${fy + 32} 34 ${nose} Z` : "";
+    // Ferrari : grande ouïe derrière la roue avant
+    S.vent = p.vent ? `M${fx + 30} ${fy + 8} L${fx + 52} ${vy - 2} L${fx + 56} ${vy + 22} L${fx + 34} ${fy + 30} Z` : "";
     S.wheels = [[86, 93], [338, 93]];
-    S.roundel = [ce + 10, 82];
+    S.roundel = [ce + 14, 80];
     S.p = p;
     return S;
   }
@@ -81,84 +95,113 @@
   // Dessine la voiture dans un contexte <canvas> (repère 420 × 130)
   function draw(ctx, slug, number = "", { glow = null } = {}) {
     const S = shapes(slug);
-    const L = S.p.livery || { base: "#ccc", nose: "#ccc", stripe: "#888", rear: "#333", wing: "#222", light: "#fff", num: "#111", roundel: "#fff" };
-    const { cx, cy, fx, dx, deck, nose, lip } = S.p;
+    const L = S.p.livery;
+    const { cx, cy, fx, rx, nose, nt, tl, ty } = S.p;
     const body = new Path2D(S.body);
+    const P = d => new Path2D(d);
 
     // Ombre au sol
-    ctx.save();
     const sh = ctx.createRadialGradient(210, 122, 10, 210, 122, 220);
-    sh.addColorStop(0, "rgba(0,0,0,.55)"); sh.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = sh; ctx.fillRect(-20, 112, 460, 22);
-    ctx.restore();
+    sh.addColorStop(0, "rgba(0,0,0,.6)"); sh.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = sh; ctx.fillRect(-20, 110, 460, 24);
 
     // Aileron et dérive (derrière la carrosserie)
-    ctx.fillStyle = L.wing; ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.lineWidth = 0.8;
-    if (S.fin) { const f = new Path2D(S.fin); ctx.fill(f); ctx.stroke(f); }
-    const w = new Path2D(S.wing); ctx.fill(w); ctx.stroke(w);
+    ctx.fillStyle = L.wing; ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.lineWidth = 0.7;
+    if (S.fin) { const f = P(S.fin); ctx.fill(f); ctx.stroke(f); }
+    const w = P(S.wing); ctx.fill(w); ctx.stroke(w);
 
-    // Carrosserie + livrée (découpée selon la forme de la voiture)
+    // Carrosserie
     ctx.save();
     if (glow) { ctx.shadowColor = glow; ctx.shadowBlur = 50; }
     ctx.fillStyle = L.base; ctx.fill(body);
     ctx.restore();
-    ctx.strokeStyle = "rgba(255,255,255,.18)"; ctx.lineWidth = 0.8; ctx.stroke(body);
+
+    // Livrée, découpée selon la forme de la voiture
     ctx.save();
     ctx.clip(body);
-    ctx.fillStyle = L.nose; ctx.fill(new Path2D(`M0 0 L${fx + 14} 0 L${fx - 24} 130 L0 130 Z`));
-    ctx.fillStyle = L.stripe; ctx.fill(new Path2D(`M${cx - 14} 130 L${cx + 36} 0 L${cx + 56} 0 L${cx + 6} 130 Z`));
-    if (L.stripe2) { ctx.fillStyle = L.stripe2; ctx.fill(new Path2D(`M${cx + 10} 130 L${cx + 60} 0 L${cx + 68} 0 L${cx + 18} 130 Z`)); }
-    ctx.fillStyle = L.rear; ctx.fill(new Path2D(`M${dx + 4} 0 L420 0 L420 130 L${dx - 26} 130 Z`));
-    // Bas de caisse sombre + reflet sur le haut
-    ctx.fillStyle = "rgba(0,0,0,.35)"; ctx.fillRect(0, 101, 420, 10);
-    const hl = ctx.createLinearGradient(0, 30, 0, 100);
-    hl.addColorStop(0, "rgba(255,255,255,.28)"); hl.addColorStop(.45, "rgba(255,255,255,0)"); hl.addColorStop(1, "rgba(0,0,0,.25)");
+    ctx.fillStyle = L.nose; ctx.fill(P(`M0 0 L${fx + 20} 0 L${fx - 18} 130 L0 130 Z`));
+    if (L.zebra) {                                         // motif zébré (Peugeot 2026)
+      ctx.fillStyle = L.zebra;
+      for (let i = 0; i < 14; i++) {
+        const x = 10 + i * 30 + (i % 3) * 6;
+        ctx.fill(P(`M${x} 130 L${x + 26} 30 L${x + 34 + (i % 2) * 6} 30 L${x + 12 + (i % 2) * 4} 130 Z`));
+      }
+    }
+    ctx.fillStyle = L.stripe; ctx.fill(P(`M${cx - 18} 130 L${cx + 30} 0 L${cx + 48} 0 L${cx} 130 Z`));
+    if (L.stripe2) { ctx.fillStyle = L.stripe2; ctx.fill(P(`M${cx + 4} 130 L${cx + 52} 0 L${cx + 60} 0 L${cx + 12} 130 Z`)); }
+    if (L.stripe3) { ctx.fillStyle = L.stripe3; ctx.fill(P(`M${cx + 16} 130 L${cx + 64} 0 L${cx + 72} 0 L${cx + 24} 130 Z`)); }
+    ctx.fillStyle = L.rear; ctx.fill(P(`M${rx - 10} 0 L420 0 L420 130 L${rx - 40} 130 Z`));
+    // Bas de caisse sombre, ligne de caisse et reflets
+    ctx.fillStyle = "rgba(0,0,0,.45)"; ctx.fill(P(`M0 96 L420 92 L420 106 L0 106 Z`));
+    ctx.strokeStyle = "rgba(0,0,0,.25)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(40, nt + 8); ctx.lineTo(tl - 10, ty + 12); ctx.stroke();
+    const hl = ctx.createLinearGradient(0, 30, 0, 106);
+    hl.addColorStop(0, "rgba(255,255,255,.3)"); hl.addColorStop(.4, "rgba(255,255,255,0)"); hl.addColorStop(1, "rgba(0,0,0,.3)");
     ctx.fillStyle = hl; ctx.fillRect(0, 0, 420, 130);
     ctx.restore();
+    ctx.strokeStyle = "rgba(255,255,255,.2)"; ctx.lineWidth = 0.7; ctx.stroke(body);
 
-    if (S.gap) { ctx.fillStyle = "rgba(0,0,0,.65)"; ctx.fill(new Path2D(S.gap)); }
-    if (S.scoop) { ctx.fillStyle = L.wing; ctx.fill(new Path2D(S.scoop)); }
+    // Détails sombres : entrée d'air, ouïes, diffuseur, lame avant
+    ctx.fillStyle = "rgba(0,0,0,.55)";
+    ctx.fill(P(S.intake)); ctx.fill(P(S.diffuser));
+    if (S.gap) ctx.fill(P(S.gap));
+    if (S.vent) ctx.fill(P(S.vent));
+    ctx.fillStyle = "#0b0b0e"; ctx.fill(P(S.splitter));
+    ctx.fillStyle = L.wing;
+    if (S.scoop) ctx.fill(P(S.scoop));
+    if (S.pod) ctx.fill(P(S.pod));
+    ctx.fill(P(S.mirror));
 
     // Vitrage
-    const glass = ctx.createLinearGradient(cx - 40, cy, cx + 40, cy + 24);
-    glass.addColorStop(0, "#0b0d14"); glass.addColorStop(.5, "#2a3142"); glass.addColorStop(1, "#0b0d14");
+    const glass = ctx.createLinearGradient(cx - 30, cy, cx + 40, cy + 20);
+    glass.addColorStop(0, "#0b0d14"); glass.addColorStop(.45, "#3a4256"); glass.addColorStop(1, "#0b0d14");
     ctx.fillStyle = glass;
-    if (S.bubble) ctx.fill(new Path2D(S.bubble));
-    ctx.fill(new Path2D(S.glass));
+    if (S.bubble) ctx.fill(P(S.bubble));
+    ctx.fill(P(S.glass));
 
-    // Phares (signature lumineuse de chaque marque)
+    // Phares : signature lumineuse de chaque marque
     ctx.save();
-    ctx.shadowColor = L.light; ctx.shadowBlur = 14; ctx.fillStyle = L.light;
-    if (L.claws) [0, 6, 12].forEach(o => ctx.fill(new Path2D(`M${10 + o} ${nose - 10} l4 0 l-3 9 l-4 0 Z`)));
-    else if (L.vlight) ctx.fillRect(12, lip - 8, 3, 14);
-    else if (L.dual) { ctx.fillRect(10, lip - 2, 30, 2.4); ctx.fillRect(12, lip + 2, 26, 2.4); }
-    else if (L.bar) ctx.fillRect(8, lip - 1, 40, 3);
-    else ctx.fill(new Path2D(S.light));
+    ctx.shadowColor = L.light; ctx.shadowBlur = 12; ctx.fillStyle = L.light;
+    const ly = nt + 6;
+    switch (L.lights) {
+      case "claws": [0, 7, 14].forEach(o => ctx.fill(P(`M${12 + o} ${ly - 4} l4 0 l-3 10 l-4 0 Z`))); break;
+      case "vertical": ctx.fillRect(14, ly - 6, 3, 14); break;
+      case "dual": ctx.fillRect(12, ly - 2, 30, 2.2); ctx.fillRect(14, ly + 2, 26, 2.2); break;
+      case "four": [0, 9, 18, 27].forEach(o => ctx.fillRect(12 + o, ly, 6, 2.4)); break;
+      case "bar": ctx.fillRect(6, nose - 9, 44, 2.6); break;
+      case "round": ctx.beginPath(); ctx.ellipse(26, ly + 1, 10, 4.5, -0.15, 0, Math.PI * 2); ctx.fill(); break;
+      case "kidney":
+        ctx.fillRect(14, ly - 1, 26, 2.4);
+        ctx.fillStyle = "rgba(0,0,0,.6)"; ctx.fill(P(`M4 ${nose - 3} L10 ${nt + 6} L20 ${nt + 6} L18 ${nose - 3} Z`)); break;
+      default: ctx.fill(P(`M10 ${ly + 2} L44 ${ly - 4} L46 ${ly - 1} L12 ${ly + 5} Z`));
+    }
     // Feu arrière
     ctx.shadowColor = "#ff2020"; ctx.fillStyle = "#ff3030";
-    ctx.fillRect(S.p.tl - 5, S.p.ty + 2, 4, 8);
+    ctx.fillRect(tl - 5, ty + 5, 4, 10);
     ctx.restore();
 
     // Rond du numéro
     if (number) {
-      const [rx, ry] = S.roundel;
-      ctx.fillStyle = L.roundel; ctx.beginPath(); ctx.arc(rx, ry, 13, 0, Math.PI * 2); ctx.fill();
+      const [rx2, ry] = S.roundel;
+      ctx.fillStyle = L.roundel; ctx.beginPath(); ctx.arc(rx2, ry, 12, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = L.num; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.font = `italic 800 ${number.length > 2 ? 12 : 16}px "Barlow Condensed", "Arial Narrow", sans-serif`;
-      ctx.fillText(number, rx, ry + 1);
+      ctx.font = `italic 800 ${number.length > 2 ? 11 : 15}px "Barlow Condensed", "Arial Narrow", sans-serif`;
+      ctx.fillText(number, rx2, ry + 1);
     }
 
-    // Roues : pneu, jante à branches, étrier
+    // Roues : pneu à flanc marqué, jante noire à branches, étrier
     S.wheels.forEach(([x, y]) => {
       ctx.fillStyle = "#0a0a0c"; ctx.beginPath(); ctx.arc(x, y, 29, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = "#2c2f36"; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "#8a909c"; ctx.lineWidth = 2.2;
+      ctx.strokeStyle = L.stripe === "#ffffff" ? "#d0d4dc" : "#e8c400"; ctx.globalAlpha = .55; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(x, y, 25.5, Math.PI * 1.1, Math.PI * 1.45); ctx.stroke(); ctx.globalAlpha = 1;   // marquage du pneu
+      ctx.fillStyle = "#1b1d22"; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#5c616c"; ctx.lineWidth = 2.4;
       for (let k = 0; k < 10; k++) {
         const a = k * Math.PI / 5;
-        ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * 4, y + Math.sin(a) * 4); ctx.lineTo(x + Math.cos(a) * 19, y + Math.sin(a) * 19); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * 5, y + Math.sin(a) * 5); ctx.lineTo(x + Math.cos(a) * 19, y + Math.sin(a) * 19); ctx.stroke();
       }
-      ctx.fillStyle = L.stripe; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = L.stripe; ctx.fillRect(x - 21, y - 8, 5, 16);
+      ctx.fillStyle = "#9aa0aa"; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = L.stripe; ctx.fillRect(x - 21, y - 9, 5, 18);
     });
   }
 

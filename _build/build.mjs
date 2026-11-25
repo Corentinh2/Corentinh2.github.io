@@ -1137,7 +1137,7 @@ const assetFiles = ["assets/css", "assets/js", "assets/img"].flatMap(d => readdi
 const light = assetFiles.filter(f => !f.startsWith("assets/img/") || /icon-|silhouette|toyota-3|centenaire/.test(f));
 const precache = ["/", "/en/", ...written.filter(f => f !== "404.html").map(f => "/" + f), "/manifest.webmanifest", ...light.map(f => "/" + f)];
 const hash = createHash("sha1");
-[...written, ...assetFiles].forEach(f => hash.update(readFileSync(join(ROOT, f))));
+[...written, ...assetFiles, "_build/sw.template.js"].forEach(f => hash.update(readFileSync(join(ROOT, f))));
 const version = hash.digest("hex").slice(0, 10);
 writeFileSync(join(ROOT, "sw.js"), readFileSync(join(ROOT, "_build/sw.template.js"), "utf8")
   .replace("__VERSION__", version)

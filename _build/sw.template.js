@@ -5,7 +5,8 @@ const CACHE = `lemans-${VERSION}`;
 const PRECACHE = __PRECACHE__;
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  // cache: "reload" évite de récupérer une ancienne version gardée par le navigateur
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(PRECACHE.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", event => {
@@ -31,16 +32,21 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // Fichiers du site et polices Google : le cache d'abord, mis à jour en arrière-plan
   const sameOrigin = url.origin === location.origin;
   const fonts = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
   if (!sameOrigin && !fonts) return;
+  const put = res => { if (res.ok || res.type === "opaque") { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); } return res; };
+
+  // Code du site (CSS, JS, données) : toujours la dernière version, le cache seulement hors connexion
+  if (sameOrigin && /\.(css|js|json|webmanifest|xml|txt)$/.test(url.pathname)) {
+    event.respondWith(fetch(req, { cache: "no-cache" }).then(put).catch(() => caches.match(req, { cacheName: CACHE })));
+    return;
+  }
+
+  // Images et polices : le cache d'abord (elles changent rarement), mises à jour en arrière-plan
   event.respondWith(
-    caches.match(req).then(cached => {
-      const network = fetch(req).then(res => {
-        if (res.ok || res.type === "opaque") { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
-        return res;
-      }).catch(() => cached);
+    caches.match(req, { cacheName: CACHE }).then(cached => {
+      const network = fetch(req).then(put).catch(() => cached);
       return cached || network;
     })
   );
