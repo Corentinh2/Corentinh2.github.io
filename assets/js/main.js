@@ -139,4 +139,60 @@
 
   /* ---------- Année courante dans le pied de page ---------- */
   $$("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
+
+  /* ---------- Thème clair / sombre ---------- */
+  $(".theme-toggle")?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === "light" ? "dark" : "light";
+    const apply = () => {
+      root.dataset.theme = next;
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    };
+    // Transition en cercle depuis le bouton quand le navigateur le permet
+    if (document.startViewTransition && !reduceMotion) document.startViewTransition(apply);
+    else apply();
+  });
+
+  /* ---------- Compte à rebours jusqu'aux prochaines 24 Heures ---------- */
+  const cd = $("[data-countdown]");
+  if (cd) {
+    const target = new Date(cd.dataset.countdown).getTime();
+    const cells = $$("[data-cd]", cd);
+    const update = () => {
+      let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      if (s === 0) { $(".cd-live", cd).hidden = false; }
+      const parts = [Math.floor(s / 86400), Math.floor(s % 86400 / 3600), Math.floor(s % 3600 / 60), s % 60];
+      parts.forEach((v, i) => {
+        const txt = String(v).padStart(i ? 2 : 1, "0");
+        if (cells[i].textContent !== txt) {
+          cells[i].textContent = txt;
+          if (!reduceMotion) { cells[i].classList.remove("tick"); void cells[i].offsetWidth; cells[i].classList.add("tick"); }
+        }
+      });
+    };
+    update();
+    setInterval(update, 1000);
+  }
+
+  /* ---------- Cartes drapeaux qui se retournent ---------- */
+  $$(".flag-card").forEach(card => card.addEventListener("click", () => card.classList.toggle("flipped")));
+
+  /* ---------- Histoire : année affichée en suivant le défilement ---------- */
+  const yearNow = $(".year-now");
+  if (yearNow) {
+    const items = $$(".timeline li");
+    const yio = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) yearNow.textContent = e.target.dataset.y; });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    items.forEach(li => yio.observe(li));
+  }
+
+  /* ---------- Mode hors connexion (service worker) ---------- */
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    addEventListener("load", () => navigator.serviceWorker.register(document.body.dataset.sw || "/sw.js", { scope: "/" }).catch(() => {}));
+  }
+  const setOnline = () => document.body.classList.toggle("is-offline", !navigator.onLine);
+  addEventListener("online", setOnline);
+  addEventListener("offline", setOnline);
+  setOnline();
 })();
