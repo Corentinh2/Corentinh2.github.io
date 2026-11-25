@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 124">
+  <!-- Silhouette générique d'hypercar (profil, cockpit fermé), utilisée en attendant une vraie photo -->
+  <path fill="#000" d="M4 94 C6 88 16 85 32 83 C52 80 62 66 92 62 C118 59 132 66 146 68 C160 66 170 52 190 44 C210 37 238 36 256 42 C268 46 274 54 282 58 L336 60 L344 30 L398 26 L398 40 L362 44 L360 64 C378 66 392 72 396 82 L396 96 L350 96 A30 30 0 0 0 290 96 L126 96 A30 30 0 0 0 66 96 L4 96 Z"/>
+  <path fill="#000" d="M236 38 L338 32 L342 60 L266 54 Z"/>
+  <circle fill="#000" cx="96" cy="98" r="24"/>
+  <circle fill="#000" cx="320" cy="98" r="24"/>
+</svg>
