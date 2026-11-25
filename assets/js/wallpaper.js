@@ -8,13 +8,6 @@
   const canvas = root.querySelector("canvas");
   const ctx = canvas.getContext("2d");
   const dl = root.querySelector(".wp-dl");
-  // Même silhouette que assets/img/silhouette.svg (viewBox 400 × 124)
-  const CAR = [
-    new Path2D("M4 94 C6 88 16 85 32 83 C52 80 62 66 92 62 C118 59 132 66 146 68 C160 66 170 52 190 44 C210 37 238 36 256 42 C268 46 274 54 282 58 L336 60 L344 30 L398 26 L398 40 L362 44 L360 64 C378 66 392 72 396 82 L396 96 L350 96 A30 30 0 0 0 290 96 L126 96 A30 30 0 0 0 66 96 L4 96 Z"),
-    new Path2D("M236 38 L338 32 L342 60 L266 54 Z"),
-  ];
-  const WHEELS = [[96, 98], [320, 98]];
-
   const val = name => root.querySelector(`input[name="${name}"]:checked`).value;
 
   function draw() {
@@ -59,18 +52,12 @@
     ctx.lineWidth = 6; ctx.strokeStyle = t.color + "66";
     ctx.strokeText(t.number, phone ? W - 40 : W - 80, phone ? H * 0.3 : H * 0.48);
 
-    // Silhouette de la voiture
-    const cw = phone ? W * 0.9 : W * 0.55, s = cw / 400;
+    // La voiture, dessinée en vectoriel avec sa forme et sa livrée (cars.js)
+    const cw = phone ? W * 0.92 : W * 0.56, s = cw / 420;
     ctx.save();
-    ctx.translate(phone ? W * 0.05 : W * 0.4, phone ? H * 0.5 : H * 0.55);
+    ctx.translate(phone ? W * 0.04 : W * 0.41, phone ? H * 0.47 : H * 0.52);
     ctx.scale(s, s);
-    const g = ctx.createLinearGradient(0, 0, 400, 0);
-    g.addColorStop(0, t.color); g.addColorStop(1, "#ffffff");
-    ctx.shadowColor = t.color; ctx.shadowBlur = 40;
-    ctx.fillStyle = g;
-    CAR.forEach(p => ctx.fill(p));
-    ctx.shadowBlur = 0; ctx.fillStyle = "#0b0d12";
-    WHEELS.forEach(([x, y]) => { ctx.beginPath(); ctx.arc(x, y, 24, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = t.color; ctx.lineWidth = 3; ctx.stroke(); });
+    window.LM_CARS.draw(ctx, t.slug, t.number, { glow: style === 1 ? t.color : null });
     ctx.restore();
 
     // Textes

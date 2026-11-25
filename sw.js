@@ -1,6 +1,6 @@
 /* Service worker : permet de consulter le site hors connexion.
    Fichier généré par _build/build.mjs — ne pas modifier directement. */
-const VERSION = "c1040186a3";
+const VERSION = "746dcb7822";
 const CACHE = `lemans-${VERSION}`;
 const PRECACHE = [
   "/",
@@ -60,6 +60,7 @@ const PRECACHE = [
   "/offline.html",
   "/manifest.webmanifest",
   "/assets/css/style.css",
+  "/assets/js/cars.js",
   "/assets/js/circuit.js",
   "/assets/js/compare.js",
   "/assets/js/engine.js",

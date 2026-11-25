@@ -1034,7 +1034,7 @@ function buildWallpapers(T) {
   const c = ctx(T, "FondsEcran.html");
   const P = T.x.wallpapers;
   const data = teams.map(t => ({ slug: t.slug, name: t.name, car: t.car, color: t.color, number: t.number }));
-  write(out(c, "FondsEcran.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["wallpaper"] })}
+  write(out(c, "FondsEcran.html"), `${head(c, { title: P.title, desc: P.desc, scripts: ["cars", "wallpaper"] })}
 ${nav(c)}
 
 <main id="contenu">
