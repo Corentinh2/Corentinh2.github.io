@@ -131,6 +131,7 @@
     });
     // Petites détonations à la décélération
     const tLift = pts[pts.length - 3][0];
+    const pops = [];
     for (let k = 0; k < 6; k++) {
       const at = now + tLift + 0.15 + k * 0.17 + Math.random() * 0.08;
       const pop = makeNoise(c), pg = c.createGain(), pf = c.createBiquadFilter();
@@ -138,12 +139,14 @@
       pg.gain.setValueAtTime(0, at); pg.gain.linearRampToValueAtTime(0.35, at + 0.005); pg.gain.exponentialRampToValueAtTime(0.001, at + 0.07);
       pop.connect(pf).connect(pg).connect(master);
       pop.start(at); pop.stop(at + 0.1);
+      pops.push(pop);
     }
     master.gain.setValueAtTime(0.5, now + end - 0.4);
     master.gain.exponentialRampToValueAtTime(0.0001, now + end);
 
-    const all = [...oscs.map(o => o.osc), noise, turbo?.osc, elec?.osc].filter(Boolean);
-    all.forEach(n => { n.start(now); n.stop(now + end + 0.05); });
+    const sources = [...oscs.map(o => o.osc), noise, turbo?.osc, elec?.osc].filter(Boolean);
+    sources.forEach(n => { n.start(now); n.stop(now + end + 0.05); });
+    const all = [...sources, ...pops];
 
     // Compte-tours synchronisé
     const t0 = performance.now();

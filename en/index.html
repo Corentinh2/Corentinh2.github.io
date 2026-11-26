@@ -2,6 +2,7 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BkAzbCKhyBD7TYai0X4QA1uoDU/lQSRa/UGTCp+AnUY=' 'unsafe-hashes' 'sha256-1jAmyYXcRq6zFldLe/GCgIDJBiOONdXjTLgEFMDnDSM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>24 Hours of Le Mans: the hypercars, from the centenary to 2026</title>
   <meta name="description" content="The hypercars of the 24 Hours of Le Mans: 2023 to 2026 winners, teams, circuit, history, quiz and comparison tool.">
@@ -107,13 +108,15 @@
           <a class="btn ghost" href="#palmares">The winners</a>
         </div>
       </div>
-      <aside class="countdown" data-countdown="2027-06-12T16:00:00+02:00" aria-label="Next start">
+      <aside class="countdown" data-countdown="2027-06-12T16:00:00+02:00" aria-label="Next start"
+        data-live-title="Race live" data-live-date="Time left to the finish"
+        data-after-title="See you in 2028" data-after-date="The 95th edition is over" data-after-note="The date of the next edition will be announced soon.">
         <span class="eyebrow">95th edition</span>
         <strong class="cd-title">Next start</strong>
         <span class="cd-date">Saturday 12 June 2027</span>
         <div class="cd-grid"><div><b data-cd="0">--</b><small>days</small></div><div><b data-cd="1">--</b><small>hours</small></div><div><b data-cd="2">--</b><small>min</small></div><div><b data-cd="3">--</b><small>s</small></div></div>
         <span class="cd-live" hidden>The race is on!</span>
-        <small class="muted">Race week runs from 9 to 13 June 2027.</small>
+        <small class="muted cd-note">Race week runs from 9 to 13 June 2027.</small>
       </aside>
     </div>
     <span class="scroll-cue" aria-hidden="true"></span>

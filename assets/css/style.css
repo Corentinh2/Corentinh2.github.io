@@ -169,9 +169,10 @@ section { padding: clamp(72px, 10vw, 130px) 0; position: relative; }
     background: color-mix(in srgb, var(--bg) 97%, transparent); backdrop-filter: blur(20px);
     overflow-y: auto;
     clip-path: circle(0 at calc(100% - 46px) 36px);
-    transition: clip-path .6s var(--ease);
+    visibility: hidden;                                   /* fermé : hors de portée du clavier */
+    transition: clip-path .6s var(--ease), visibility 0s .6s;
   }
-  .menu-open .nav-links { clip-path: circle(150% at calc(100% - 46px) 36px); }
+  .menu-open .nav-links { clip-path: circle(150% at calc(100% - 46px) 36px); visibility: visible; transition: clip-path .6s var(--ease); }
   .nav-links a, .nav-links button { font-size: 1.3rem; padding: 14px 10px; text-align: left; width: 100%; }
   .nav-links button { display: none; }
   .mega {
@@ -552,6 +553,7 @@ footer { border-top: 1px solid var(--line); padding: 56px 0 40px; margin-top: 40
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .js [data-reveal] { opacity: 1; transform: none; }
   .trails { display: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }

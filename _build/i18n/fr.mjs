@@ -27,6 +27,8 @@ export default {
   countdown: {
     eyebrow: "95e édition", title: "Prochain départ", date: "Samedi 12 juin 2027",
     units: ["jours", "heures", "min", "s"], live: "La course est lancée !",
+    liveTitle: "Course en direct", liveDate: "Temps restant avant l'arrivée",
+    afterTitle: "Rendez-vous en 2028", afterDate: "La 95e édition est terminée", afterNote: "La date de la prochaine édition sera bientôt annoncée.",
     note: "Semaine des 24 Heures du 9 au 13 juin 2027.",
   },
 

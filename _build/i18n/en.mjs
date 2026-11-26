@@ -27,6 +27,8 @@ export default {
   countdown: {
     eyebrow: "95th edition", title: "Next start", date: "Saturday 12 June 2027",
     units: ["days", "hours", "min", "s"], live: "The race is on!",
+    liveTitle: "Race live", liveDate: "Time left to the finish",
+    afterTitle: "See you in 2028", afterDate: "The 95th edition is over", afterNote: "The date of the next edition will be announced soon.",
     note: "Race week runs from 9 to 13 June 2027.",
   },
 

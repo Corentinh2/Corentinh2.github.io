@@ -26,6 +26,8 @@ const gridTeams = teams.filter(t => t.grid);
 const otherTeams = teams.filter(t => !t.grid);
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const json = o => JSON.stringify(o).replace(/</g, "\\u003c");
+// N'accepte que des liens https (données externes, ex. Wikimedia), sinon rien
+const safeUrl = u => (/^https:\/\/[^\s"'<>]+$/i.test(String(u || "")) ? esc(u) : "");
 
 const FAVICON = `data:image/svg+xml,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#ffd400"/><text x="32" y="44" font-family="Arial Black,Arial" font-weight="900" font-style="italic" font-size="30" text-anchor="middle" fill="#000">24</text></svg>`)}`;
@@ -40,6 +42,20 @@ function ctx(T, file, opts = {}) {
   return { T, file, B, A, isEn };
 }
 
+// Politique de sécurité du contenu : seules les sources listées peuvent être chargées
+const THEME_JS = 'document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}';
+const FONT_ONLOAD = "this.onload=null;this.rel='stylesheet'";
+const sha = t => `'sha256-${createHash("sha256").update(t).digest("base64")}'`;
+const CSP = [
+  "default-src 'self'",
+  `script-src 'self' ${sha(THEME_JS)} 'unsafe-hashes' ${sha(FONT_ONLOAD)}${GOATCOUNTER ? " https://gc.zgo.at" : ""}`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  `img-src 'self' data: blob:${GOATCOUNTER ? " https://*.goatcounter.com" : ""}`,
+  `connect-src 'self'${GOATCOUNTER ? " https://*.goatcounter.com" : ""}`,
+  "frame-src https://www.youtube-nocookie.com",
+  "worker-src 'self'", "manifest-src 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
+].join("; ");
 const FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700;800&display=swap";
 function head(c, { title, desc, accent = "#ffd400", scripts = [], hero = null }) {
   const { T, file, A, isEn } = c;
@@ -50,6 +66,7 @@ function head(c, { title, desc, accent = "#ffd400", scripts = [], hero = null })
 <html lang="${T.lang}" class="no-js">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="${CSP}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
   <meta name="description" content="${esc(desc)}">
@@ -73,11 +90,11 @@ function head(c, { title, desc, accent = "#ffd400", scripts = [], hero = null })
   <link rel="manifest" href="${A}manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="${FONTS}" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="${FONTS}" onload="${FONT_ONLOAD}">
   <noscript><link rel="stylesheet" href="${FONTS}"></noscript>
 ${hero ? `  <link rel="preload" as="image" href="${A}assets/img/${hero}.webp" fetchpriority="high">` : ""}
   <link rel="stylesheet" href="${A}assets/css/style.css">
-  <script>document.documentElement.className = "js"; try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script>${THEME_JS}</script>
   <script src="${A}assets/js/main.js" defer></script>
 ${scripts.map(s => `  <script src="${A}assets/js/${s}.js" defer></script>`).join("\n")}
 ${opts_jsonld(c)}
@@ -263,13 +280,15 @@ ${nav(c)}
           <a class="btn ghost" href="#palmares">${P.ctaWinners}</a>
         </div>
       </div>
-      <aside class="countdown" data-countdown="${RACE_2027}" aria-label="${T.countdown.title}">
+      <aside class="countdown" data-countdown="${RACE_2027}" aria-label="${T.countdown.title}"
+        data-live-title="${esc(T.countdown.liveTitle)}" data-live-date="${esc(T.countdown.liveDate)}"
+        data-after-title="${esc(T.countdown.afterTitle)}" data-after-date="${esc(T.countdown.afterDate)}" data-after-note="${esc(T.countdown.afterNote)}">
         <span class="eyebrow">${T.countdown.eyebrow}</span>
         <strong class="cd-title">${T.countdown.title}</strong>
         <span class="cd-date">${T.countdown.date}</span>
         <div class="cd-grid">${T.countdown.units.map((u, i) => `<div><b data-cd="${i}">--</b><small>${u}</small></div>`).join("")}</div>
         <span class="cd-live" hidden>${T.countdown.live}</span>
-        <small class="muted">${T.countdown.note}</small>
+        <small class="muted cd-note">${T.countdown.note}</small>
       </aside>
     </div>
     <span class="scroll-cue" aria-hidden="true"></span>
@@ -1073,7 +1092,7 @@ ${pageHero(c, P)}
   <section style="padding-top: 20px;">
     <div class="container">
       <div class="credits" data-stagger>
-${Object.entries(credits).map(([file, k]) => `        <article><img src="${c.A}assets/img/${file}.webp" alt="" loading="lazy"><div><b>${esc(k.title.replace(/\.(jpe?g|png)$/i, ""))}</b><span>${P.author} : ${esc(k.artist)}</span><span>${P.license} : ${k.licenseUrl ? `<a href="${k.licenseUrl}" target="_blank" rel="noopener license">${k.license}</a>` : k.license}</span><a href="${k.source}" target="_blank" rel="noopener">${P.source} ↗</a></div></article>`).join("\n")}
+${Object.entries(credits).map(([file, k]) => `        <article><img src="${c.A}assets/img/${file}.webp" alt="" loading="lazy"><div><b>${esc(k.title.replace(/\.(jpe?g|png)$/i, ""))}</b><span>${P.author} : ${esc(k.artist)}</span><span>${P.license} : ${safeUrl(k.licenseUrl) ? `<a href="${safeUrl(k.licenseUrl)}" target="_blank" rel="noopener noreferrer license">${esc(k.license)}</a>` : esc(k.license)}</span>${safeUrl(k.source) ? `<a href="${safeUrl(k.source)}" target="_blank" rel="noopener noreferrer">${P.source} ↗</a>` : ""}</div></article>`).join("\n")}
       </div>
       <p class="muted" style="margin-top: 24px;">${P.changes}</p>
       <div class="notice" style="margin-top: 24px;"><span>📷</span><p style="margin: 0;"><b>${P.original}.</b> ${P.originalText}</p></div>

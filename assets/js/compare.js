@@ -8,6 +8,9 @@
   const sides = { a: root.querySelector('[data-side="a"]'), b: root.querySelector('[data-side="b"]') };
   const rowsEl = root.querySelector(".cmp-rows");
   const get = slug => teams.find(t => t.slug === slug);
+  // Échappe le texte avant de l'insérer dans le HTML
+  const esc = v => String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const safeSlug = v => String(v).replace(/[^a-z0-9-]/gi, "");
 
   // Lignes : [clé, formatage, valeur numérique pour les barres (ou null), plus grand = mieux ?]
   const rows = [
@@ -25,9 +28,9 @@
     const box = side.querySelector(".cmp-media");
     side.style.setProperty("--c", t.color);
     box.innerHTML = (t.img
-      ? `<img src="${assets}assets/img/${t.img}.webp" alt="${t.name} ${t.car}">`
-      : `<div class="silhouette" style="--c:${t.color}"><span class="ph">${L.photoSoon}</span></div>`) +
-      `<a class="name" href="${t.file}">${t.name}</a>`;
+      ? `<img src="${esc(assets)}assets/img/${safeSlug(t.img)}.webp" alt="${esc(t.name)} ${esc(t.car)}">`
+      : `<div class="silhouette" style="--c:${esc(t.color)}"><span class="ph">${esc(L.photoSoon)}</span></div>`) +
+      `<a class="name" href="${esc(t.file)}">${esc(t.name)}</a>`;
   }
 
   function render() {
@@ -37,11 +40,11 @@
     rowsEl.innerHTML = rows.map(([k, fmt, num, max], i) => {
       const va = num ? num(A) : null, vb = num ? num(B) : null;
       const wa = num && va > vb ? " win" : "", wb = num && vb > va ? " win" : "";
-      const bar = (v, t) => (num ? `<span class="b" style="--c:${t.color}; width:0" data-w="${Math.max(2, v / max * 100)}%"></span>` : "");
+      const bar = (v, t) => (num ? `<span class="b" style="--c:${esc(t.color)}; width:0" data-w="${Math.max(2, v / max * 100)}%"></span>` : "");
       return `<div class="cmp-row" style="animation-delay:${i * 50}ms">
-        <span class="v a${wa}">${bar(va, A)}<span>${fmt(A)}</span></span>
-        <span class="lab">${L[k]}</span>
-        <span class="v b${wb}">${bar(vb, B)}<span>${fmt(B)}</span></span>
+        <span class="v a${wa}">${bar(va, A)}<span>${esc(fmt(A))}</span></span>
+        <span class="lab">${esc(L[k])}</span>
+        <span class="v b${wb}">${bar(vb, B)}<span>${esc(fmt(B))}</span></span>
       </div>`;
     }).join("");
     // Les barres se remplissent après l'affichage

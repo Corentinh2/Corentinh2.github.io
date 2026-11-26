@@ -13,7 +13,12 @@
   const fuel = $(".fuel"), fuelBar = $(".fuel-bar i"), fuelBtn = $(".fuel-btn"), fuelOk = $(".fuel-ok");
   const tEl = $(".g-time"), pEl = $(".g-pen"), bEl = $(".g-best");
   const KEY = "lemans-pitstop-best";
-  let best = parseFloat(localStorage.getItem(KEY)) || null;
+  // Le stockage peut être bloqué (navigation privée, cookies désactivés) : on ne doit pas planter
+  const load = () => { try { return parseFloat(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
+  const save = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+  let best = load();
+  let timers = [];
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
   let phase = "idle", t0 = 0, pen = 0, raf = 0, carY = 0, wheelOrder = [], fuelLvl = 0, filling = false, okZone = [0, 0], greenAt = 0;
 
   const show = s => { msg.textContent = s; msg.classList.remove("pop"); void msg.offsetWidth; msg.classList.add("pop"); };
@@ -37,6 +42,8 @@
   }
 
   function start() {
+    timers.forEach(clearTimeout); timers = [];          // annule les minuteries d'une partie précédente
+    car.classList.remove("leave");
     $(".game-start").hidden = true; $(".game-end").hidden = true;
     pen = 0; pEl.textContent = "0 s"; carY = -30; car.style.top = `${carY}%`;
     wheels.forEach(w => w.classList.remove("done", "next"));
@@ -54,7 +61,7 @@
     carY = 42; car.style.top = "42%";
     phase = "wheels";
     wheelOrder = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
-    setTimeout(() => { show(T.msgs.wheels); nextWheel(); }, 250);
+    later(() => { show(T.msgs.wheels); nextWheel(); }, 250);
   }
 
   function nextWheel() {
@@ -96,14 +103,14 @@
     lights.forEach(l => l.className = "red");
     const wait = 900 + Math.random() * 2200;
     greenAt = performance.now() + wait;
-    setTimeout(() => { if (phase === "release") { lights.forEach(l => l.className = "green"); show(T.msgs.now); } }, wait);
+    later(() => { if (phase === "release") { lights.forEach(l => l.className = "green"); show(T.msgs.now); } }, wait);
   }
 
   function release() {
     if (performance.now() < greenAt) { addPen(5, T.msgs.early); return; }
     phase = "leaving";
     car.classList.add("leave");
-    setTimeout(() => { car.style.top = "130%"; car.classList.remove("leave"); finish(); }, 600);
+    later(() => { car.style.top = "130%"; car.classList.remove("leave"); finish(); }, 600);
   }
 
   function finish() {
@@ -113,7 +120,7 @@
     tEl.textContent = fmt(total);
     $(".game-end").hidden = false;
     let text = fmt(total);
-    if (!best || total < best) { best = total; localStorage.setItem(KEY, best); bEl.textContent = fmt(best); text += ` · ${T.newBest}`; }
+    if (!best || total < best) { best = total; save(best); bEl.textContent = fmt(best); text += ` · ${T.newBest}`; }
     $(".g-final").textContent = text;
     $(".g-verdict").textContent = T.end[total < 9 ? 0 : total < 12 ? 1 : total < 16 ? 2 : 3];
   }

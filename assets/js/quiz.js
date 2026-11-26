@@ -26,10 +26,10 @@
     $(".quiz-progress i").style.width = `${idx / questions.length * 100}%`;
     qEl.textContent = text;
     qEl.classList.remove("enter"); void qEl.offsetWidth; qEl.classList.add("enter");
-    feedback.innerHTML = "";
+    feedback.replaceChildren();
     next.hidden = true;
     // Les réponses sont mélangées à chaque fois
-    answers.innerHTML = "";
+    answers.replaceChildren();
     shuffle(opts.map((o, i) => [o, i])).forEach(([o, i]) => {
       const b = document.createElement("button");
       b.textContent = o;
@@ -47,7 +47,10 @@
       if (b.dataset.good === "true") b.classList.add("ok");
     });
     if (ok) score++; else btn.classList.add("ko");
-    feedback.innerHTML = `<b class="${ok ? "ok" : "ko"}">${ok ? T.good : T.bad}</b> ${why}`;
+    const b = document.createElement("b");
+    b.className = ok ? "ok" : "ko";
+    b.textContent = ok ? T.good : T.bad;
+    feedback.replaceChildren(b, ` ${why}`);
     $(".quiz-score").textContent = `${score} ★`;
     next.textContent = idx < questions.length - 1 ? `${T.next} →` : `${T.results} →`;
     next.hidden = false;

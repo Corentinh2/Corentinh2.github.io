@@ -6,7 +6,10 @@ const PRECACHE = __PRECACHE__;
 
 self.addEventListener("install", event => {
   // cache: "reload" évite de récupérer une ancienne version gardée par le navigateur
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(PRECACHE.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
+  // Chaque fichier est ajouté séparément : un fichier manquant ne bloque pas toute l'installation
+  event.waitUntil(caches.open(CACHE)
+    .then(cache => Promise.all(PRECACHE.map(u => cache.add(new Request(u, { cache: "reload" })).catch(() => {}))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", event => {
@@ -26,7 +29,7 @@ self.addEventListener("fetch", event => {
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req)
-        .then(res => { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); return res; })
+        .then(res => { if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); } return res; })
         .catch(() => caches.match(req).then(r => r || caches.match("/offline.html")))
     );
     return;
@@ -35,7 +38,7 @@ self.addEventListener("fetch", event => {
   const sameOrigin = url.origin === location.origin;
   const fonts = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
   if (!sameOrigin && !fonts) return;
-  const put = res => { if (res.ok || res.type === "opaque") { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); } return res; };
+  const put = res => { if (res.ok || (res.type === "opaque" && fonts)) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); } return res; };
 
   // Code du site (CSS, JS, données) : toujours la dernière version, le cache seulement hors connexion
   if (sameOrigin && /\.(css|js|json|webmanifest|xml|txt)$/.test(url.pathname)) {

@@ -2,6 +2,7 @@
 <html lang="fr" class="no-js">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BkAzbCKhyBD7TYai0X4QA1uoDU/lQSRa/UGTCp+AnUY=' 'unsafe-hashes' 'sha256-1jAmyYXcRq6zFldLe/GCgIDJBiOONdXjTLgEFMDnDSM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>24 Heures du Mans : les hypercars, du centenaire à 2026</title>
   <meta name="description" content="Les hypercars des 24 Heures du Mans : vainqueurs 2023 à 2026, écuries, circuit, histoire, quiz et comparateur.">
@@ -107,13 +108,15 @@
           <a class="btn ghost" href="#palmares">Les vainqueurs</a>
         </div>
       </div>
-      <aside class="countdown" data-countdown="2027-06-12T16:00:00+02:00" aria-label="Prochain départ">
+      <aside class="countdown" data-countdown="2027-06-12T16:00:00+02:00" aria-label="Prochain départ"
+        data-live-title="Course en direct" data-live-date="Temps restant avant l'arrivée"
+        data-after-title="Rendez-vous en 2028" data-after-date="La 95e édition est terminée" data-after-note="La date de la prochaine édition sera bientôt annoncée.">
         <span class="eyebrow">95e édition</span>
         <strong class="cd-title">Prochain départ</strong>
         <span class="cd-date">Samedi 12 juin 2027</span>
         <div class="cd-grid"><div><b data-cd="0">--</b><small>jours</small></div><div><b data-cd="1">--</b><small>heures</small></div><div><b data-cd="2">--</b><small>min</small></div><div><b data-cd="3">--</b><small>s</small></div></div>
         <span class="cd-live" hidden>La course est lancée !</span>
-        <small class="muted">Semaine des 24 Heures du 9 au 13 juin 2027.</small>
+        <small class="muted cd-note">Semaine des 24 Heures du 9 au 13 juin 2027.</small>
       </aside>
     </div>
     <span class="scroll-cue" aria-hidden="true"></span>

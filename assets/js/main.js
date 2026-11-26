@@ -14,8 +14,9 @@
     const open = document.body.classList.toggle("menu-open");
     burger.setAttribute("aria-expanded", open);
   });
-  $$(".nav-links a").forEach(a => a.addEventListener("click", () => document.body.classList.remove("menu-open")));
-  addEventListener("keydown", e => { if (e.key === "Escape") document.body.classList.remove("menu-open"); });
+  const closeMenu = () => { document.body.classList.remove("menu-open"); burger?.setAttribute("aria-expanded", "false"); };
+  $$(".nav-links a").forEach(a => a.addEventListener("click", closeMenu));
+  addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("menu-open")) { closeMenu(); burger?.focus(); } });
 
   // Le bouton "Écuries" ouvre/ferme le méga-menu au clic (utile au clavier et sur tablette)
   $$(".has-mega > button").forEach(btn => btn.addEventListener("click", () => {
@@ -156,11 +157,28 @@
   /* ---------- Compte à rebours jusqu'aux prochaines 24 Heures ---------- */
   const cd = $("[data-countdown]");
   if (cd) {
-    const target = new Date(cd.dataset.countdown).getTime();
+    const start = new Date(cd.dataset.countdown).getTime();
+    const finish = start + 24 * 3600 * 1000;                 // la course dure 24 heures
     const cells = $$("[data-cd]", cd);
+    let timer = 0, state = "";
+    const setText = (sel, txt) => { const el = $(sel, cd); if (el && txt) el.textContent = txt; };
     const update = () => {
-      let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
-      if (s === 0) { $(".cd-live", cd).hidden = false; }
+      const now = Date.now();
+      // Trois états : avant le départ, pendant la course, après l'arrivée
+      const next = now < start ? "before" : now < finish ? "live" : "after";
+      if (next !== state) {
+        state = next;
+        cd.dataset.state = state;
+        $(".cd-live", cd).hidden = state !== "live";
+        if (state === "live") { setText(".cd-title", cd.dataset.liveTitle); setText(".cd-date", cd.dataset.liveDate); }
+        if (state === "after") {
+          setText(".cd-title", cd.dataset.afterTitle); setText(".cd-date", cd.dataset.afterDate); setText(".cd-note", cd.dataset.afterNote);
+          $(".cd-grid", cd).hidden = true;
+          clearInterval(timer);
+          return;
+        }
+      }
+      const s = Math.max(0, Math.floor(((state === "live" ? finish : start) - now) / 1000));
       const parts = [Math.floor(s / 86400), Math.floor(s % 86400 / 3600), Math.floor(s % 3600 / 60), s % 60];
       parts.forEach((v, i) => {
         const txt = String(v).padStart(i ? 2 : 1, "0");
@@ -171,7 +189,7 @@
       });
     };
     update();
-    setInterval(update, 1000);
+    if (state !== "after") timer = setInterval(update, 1000);
   }
 
   /* ---------- Cartes drapeaux qui se retournent ---------- */
